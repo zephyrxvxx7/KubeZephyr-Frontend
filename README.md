@@ -4,7 +4,7 @@
 
 This project is KubeZephyr frontend based on vue.js.
 
-It can operate kubernetes resources though backend to operate kubernetes API resources.
+It can operate kubernetes resources through backend to operate kubernetes API resources.
 
 This project generated from [anncwb/vben-admin-thin-next](https://github.com/anncwb/vue-vben-admin).
 
