@@ -94,6 +94,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       // @iconify/iconify: The dependency is dynamically and virtually loaded by @purge-icons/generated, so it needs to be specified explicitly
       include: [
         '@iconify/iconify',
+        'ant-design-vue/es/locale/zh_TW',
+        'moment/dist/locale/zh-tw',
         'ant-design-vue/es/locale/zh_CN',
         'moment/dist/locale/zh-cn',
         'ant-design-vue/es/locale/en_US',

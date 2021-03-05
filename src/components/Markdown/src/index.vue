@@ -19,7 +19,7 @@
   import { useLocale } from '/@/locales/useLocale';
   import { useModalContext } from '../../Modal';
 
-  type Lang = 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
+  type Lang = 'zh_TW' | 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
   export default defineComponent({
     inheritAttrs: false,
     props: {
@@ -38,7 +38,7 @@
 
       watchEffect(() => {});
 
-      const getCurrentLang = computed((): 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' => {
+      const getCurrentLang = computed((): 'zh_TW' | 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' => {
         let lang: Lang;
         switch (unref(getLocale)) {
           case 'en':
@@ -50,8 +50,10 @@
           case 'ko':
             lang = 'ko_KR';
             break;
-          default:
+          case 'zh_CN':
             lang = 'zh_CN';
+          default:
+            lang = 'zh_TW';
         }
         return lang;
       });

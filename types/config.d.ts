@@ -10,7 +10,7 @@ import {
 import { CacheTypeEnum } from '/@/enums/cacheEnum';
 import { ThemeMode } from '../build/config/themeConfig';
 
-export type LocaleType = 'zh_CN' | 'en' | 'ru' | 'ja' | 'ko';
+export type LocaleType = 'zh_TW' | 'zh_CN' | 'en' | 'ru' | 'ja' | 'ko';
 
 export interface MenuSetting {
   bgColor: string;

@@ -1,0 +1,21 @@
+export default {
+  operationFailed: '操作失敗',
+  errorTip: '錯誤提示',
+  errorMessage: '操作失敗，系統異常！',
+  timeoutMessage: '登入超時，請重新登入！',
+  apiTimeoutMessage: '請求超時，請重新整理頁面重試！',
+  networkException: '網路異常',
+  networkExceptionMsg: '請檢查您的網路連線是否正常！',
+
+  errMsg401: '使用者沒有權限！',
+  errMsg403: '使用者得到授權，但是被禁止訪問！',
+  errMsg404: '請求錯誤，未找到此資源！',
+  errMsg405: '請求錯誤，請求方法未允許！',
+  errMsg408: '請求超時！',
+  errMsg500: '伺服器錯誤，請聯絡系統管理員！',
+  errMsg501: '該方法尚未被支援！',
+  errMsg502: '網路異常！',
+  errMsg503: '服務不可用，伺服器過載或者是維護中！',
+  errMsg504: '連線超時！',
+  errMsg505: '客戶端http版本不支援此請求方法！',
+};

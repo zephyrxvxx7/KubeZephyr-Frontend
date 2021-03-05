@@ -1,5 +1,5 @@
 <template>
-  <ConfigProvider v-bind="lockEvent" :locale="getAntdLocale">
+  <ConfigProvider v-bind="lockEvent" v-bind:locale="getAntdLocale">
     <AppProvider>
       <RouterView />
     </AppProvider>
