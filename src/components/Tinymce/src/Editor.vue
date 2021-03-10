@@ -73,9 +73,9 @@
           menubar: 'file edit insert view format table',
           plugins: plugins,
           // 语言包
-          language_url: 'resource/tinymce/langs/zh_TW.js',
+          language_url: 'resource/tinymce/langs/zh_CN.js',
           // 中文
-          language: 'zh_TW',
+          language: 'zh_CN',
           default_link_target: '_blank',
           link_title: false,
           advlist_bullet_styles: 'square',

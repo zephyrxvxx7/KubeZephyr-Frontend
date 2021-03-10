@@ -62,7 +62,7 @@ const setting: ProjectConfig = {
     useLockPage: true,
 
     // Whether to show the full screen button
-    showFullScreen: true,
+    showFullScreen: false,
     // Whether to show the document button
     showDoc: false,
     // Whether to show the notification button
@@ -115,7 +115,7 @@ const setting: ProjectConfig = {
   // Multi-label
   multiTabsSetting: {
     // Turn on
-    show: true,
+    show: false,
     // Is it possible to drag and drop sorting tabs
     canDrag: true,
     // Turn on quick actions
@@ -154,7 +154,7 @@ const setting: ProjectConfig = {
   showBreadCrumb: true,
 
   // Whether to show the breadcrumb icon
-  showBreadCrumbIcon: false,
+  showBreadCrumbIcon: true,
 
   // Use error-handler-plugin
   useErrorHandle: false,

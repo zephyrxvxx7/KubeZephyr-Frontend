@@ -6,4 +6,7 @@ export default {
   password: '修改密碼',
 
   dept: '部門管理',
+
+  menu: '功能列管理',
+  role: '角色權限管理',
 };

@@ -2,11 +2,11 @@
 
 ## What for
 
-This project is KubeZephyr frontend based on vue.js.
+This project is the KubeZephyr frontend based on vue.js.
 
-It can operate kubernetes resources through backend to operate kubernetes API resources.
+It can operate Kubernetes resources through the backend to operate Kubernetes API resources.
 
-This project generated from [anncwb/vben-admin-thin-next](https://github.com/anncwb/vue-vben-admin).
+This project is generated from the [anncwb/vben-admin-thin-next](https://github.com/anncwb/vue-vben-admin).
 
 ## Preinstallation
 
@@ -22,6 +22,7 @@ The requirement delete `echarts`, `apexcharts`, `xlsx` and `vditor`. But the com
 So, when you want to use them. Just execute the corresponding script.
 
 The following is the sample scripts:
+
 ```js
 
 yarn add echarts
