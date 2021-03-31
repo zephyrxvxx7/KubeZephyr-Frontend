@@ -7,7 +7,7 @@ export default {
   delText: '刪除',
   resetText: '重置',
   searchText: '搜尋',
-  queryText: '查詢',
+  queryText: '輸入',
 
   inputText: '請輸入',
   chooseText: '請選擇',
