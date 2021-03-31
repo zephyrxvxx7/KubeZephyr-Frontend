@@ -88,7 +88,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
 
   import { LockOutlined } from '@ant-design/icons-vue';
-  import headerImg from '/@/assets/images/header.jpg';
+  import headerImg from '/@/assets/images/header.png';
 
   export default defineComponent({
     name: 'LockPage',

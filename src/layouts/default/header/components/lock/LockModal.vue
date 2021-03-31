@@ -33,7 +33,7 @@
 
   import { userStore } from '/@/store/modules/user';
   import { lockStore } from '/@/store/modules/lock';
-  import headerImg from '/@/assets/images/header.jpg';
+  import headerImg from '/@/assets/images/header.png';
   export default defineComponent({
     name: 'LockModal',
     components: { BasicModal, BasicForm },
