@@ -138,6 +138,7 @@
   "vetur.format.defaultFormatter.ts": "prettier-tslint",
   "vetur.format.defaultFormatter.js": "prettier",
   "vetur.languageFeatures.codeActions": false,
+  // "vetur.validation.script": false,
   "vetur.format.defaultFormatterOptions": {
     "js-beautify-html": {
       "wrap_attributes": "force-expand-multiline"
@@ -188,12 +189,17 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "[vue]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": false
+    }
+  },
   "i18n-ally.localesPaths": ["src/locales/lang"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sortKeys": true,
   "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
   "i18n-ally.enabledParsers": ["ts"],
-  "i18n-ally.sourceLanguage": "zh_TW",
+  "i18n-ally.sourceLanguage": "zh-TW",
   "i18n-ally.enabledFrameworks": ["vue", "react"]
 }
