@@ -2,9 +2,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "firefox",
+      "type": "chrome",
       "request": "launch",
-      "name": "Launch Firefox",
+      "name": "Launch Chrome",
       "url": "http://localhost:3100",
       "webRoot": "${workspaceFolder}/src",
       "sourceMaps": true
