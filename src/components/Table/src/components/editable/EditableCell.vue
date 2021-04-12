@@ -67,7 +67,7 @@
     setup(props) {
       const table = useTableContext();
       const isEdit = ref(false);
-      const elRef = ref<any>(null);
+      const elRef = ref();
       const ruleVisible = ref(false);
       const ruleMessage = ref('');
       const optionsRef = ref<LabelValueOptions>([]);
@@ -82,18 +82,6 @@
       const getRuleVisible = computed(() => {
         return unref(ruleMessage) && unref(ruleVisible);
       });
-
-      // const getSize = computed(() => {
-      //   const size = table?.getSize?.();
-      //   if (size === 'middle' || !size) {
-      //     return;
-      //   }
-
-      //   if (size === 'default') {
-      //     return 'large';
-      //   }
-      //   return size;
-      // });
 
       const getIsCheckComp = computed(() => {
         const component = unref(getComponent);
@@ -182,14 +170,16 @@
 
       async function handleChange(e: any) {
         const component = unref(getComponent);
-        if (e?.target && Reflect.has(e.target, 'value')) {
+        if (!e) {
+          currentValueRef.value = e;
+        } else if (e?.target && Reflect.has(e.target, 'value')) {
           currentValueRef.value = (e as ChangeEvent).target.value;
-        }
-        if (component === 'Checkbox') {
+        } else if (component === 'Checkbox') {
           currentValueRef.value = (e as ChangeEvent).target.checked;
         } else if (isString(e) || isBoolean(e) || isNumber(e)) {
           currentValueRef.value = e;
         }
+
         table.emit?.('edit-change', {
           column: props.column,
           value: unref(currentValueRef),

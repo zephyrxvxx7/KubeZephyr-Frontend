@@ -1,3 +1,108 @@
+## 2.3.0 (2021-04-10)
+
+## (Breaking changes) Breaking changes
+
+- Use `pinia` to replace `vuex`, `vuex-module-decorators`.
+
+  -Impact, if you used vuex-module-decorators yourself before, you need to transform it to pinia.
+
+  - the reason: -pinia is basically similar to vuex5api and is easy to understand. -Subsequent switching to vuex5 has a very low cost and can also be used as a third-party state management library
+
+- Remove `useKeyPress` and use `vueuse`-`onKeyStroke` instead
+- Remove `useDebounceFn` and use `vueuse`-`useDebounceFn` instead
+- Remove `useThrottle` and use `vueuse`-`useThrottleFn` instead
+
+### ✨ Features
+
+- Tabs support persistent storage
+
+### ✨ Refactor
+
+- Remove `useElResize`
+
+### 🐛 Bug Fixes
+
+- Login page style fix
+- Fix the known problems of the menu
+- Fix the problem of theme style switching
+
+## 2.2.0 (2021-04-06)
+
+### ✨ Features
+
+- Added `headerTitle` slot
+- New printing example
+- Added about interface
+
+### ✨ Refactor
+
+- Remove useFullScreen function
+- tinymce changed from Cdn to npm (the package size is too large)
+- Dashboard refactoring
+- Remove ApexCharts and examples
+
+### 🐛 Bug Fixes
+
+- Make sure the breadcrumbs are displayed correctly
+- Fixed the issue of tinymce upload button disappearing in full screen mode
+- Make sure that the title changes normally after logging in again
+- Ensure that the background mode login is normal
+- Fix TableAction click event issue
+
+## 2.1.1 (2021-03-26)
+
+### ✨ Features
+
+- Added hideChildrenInMenu configuration for routing. Used to hide submenu
+- Built-in expand/collapse all functions in the tree form
+
+### ✨ Refactor
+
+- Refactor the routing multi-layer mode to solve the problem of multiple implementations of nested keepalives
+
+### 🐛 Bug Fixes
+
+- Ensure that the CountDownInput component is reset to the empty value
+- Fix the display problem on the small screen in split mode
+- Fix table height calculation problem
+- Fix the problem that components cannot be obtained by background routing
+- Fix Modal component loadingTip configuration does not take effect
+- Fix the background permission command does not take effect
+- Make sure the progress bar is closed properly
+- Fix the problem of invalid table check column configuration
+- Ensure that the first level menu can be hidden
+- Ensure that the hidden fields of the form are verified properly
+
+### 🎫 Chores
+
+- Remove ls-lint
+
+### 🎫 Chores
+
+- 移除 ls-lint
+
+## 2.1.0 (2021-03-15)
+
+### ✨ Features
+
+- Added svg mode to icon selector
+- Added time component
+- Added AutoNavi/Baidu/Google Map example
+
+### ✨ Refactor
+
+- Refactor the project to solve the hot update problem caused by circular dependencies
+- Remove vueHelper/useClickoutside, use @vueuse/core instead
+
+### 🐛 Bug Fixes
+
+- Ensure that the value of `table action` is updated correctly
+- Fix the animation of page switching cannot be closed
+- Fix `PageWrapper`title not showing
+- Fix the known issues of the table
+- Fix the problem that the BasicTree component can't customize the title
+- Fix the button style problem after theme switching
+
 ## 2.0.3 (2021-03-07)
 
 ### ✨ Features

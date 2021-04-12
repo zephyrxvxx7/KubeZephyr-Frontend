@@ -2,10 +2,12 @@
   <Footer :class="prefixCls" v-if="getShowLayoutFooter">
     <div :class="`${prefixCls}__links`">
       <!-- <a @click="openWindow(SITE_URL)">{{ t('layout.footer.onlinePreview') }}</a> -->
+
       <GithubFilled @click="openWindow(GITHUB_URL)" :class="`${prefixCls}__github`" />
+
       <!-- <a @click="openWindow(DOC_URL)">{{ t('layout.footer.onlineDocument') }}</a> -->
     </div>
-    <div>Copyright &copy;2021 Zephyr</div>
+    <div>Copyright &copy;2020 Vben Admin</div>
   </Footer>
 </template>
 

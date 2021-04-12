@@ -11,6 +11,7 @@
               @change="handleSearch"
             >
               <template #prefix>
+                <!-- <Icon icon="ion:search"/> -->
                 <SearchOutlined />
               </template>
             </a-input>
@@ -22,6 +23,7 @@
           <div :class="`${prefixCls}-not-data`" v-show="getIsNotData">
             {{ t('component.app.searchNotData') }}
           </div>
+
           <ul :class="`${prefixCls}-list`" v-show="!getIsNotData" ref="scrollWrap">
             <li
               :ref="setRefs(index)"
@@ -56,6 +58,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, computed, unref, ref } from 'vue';
+
   import { SearchOutlined } from '@ant-design/icons-vue';
   import { Input } from 'ant-design-vue';
   import AppSearchFooter from './AppSearchFooter.vue';
@@ -69,15 +72,16 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useAppInject } from '/@/hooks/web/useAppInject';
 
+  import { propTypes } from '/@/utils/propTypes';
+
   export default defineComponent({
     name: 'AppSearchModal',
     components: { Icon, SearchOutlined, AppSearchFooter, [Input.name]: Input },
     directives: {
       clickOutside,
     },
-
     props: {
-      visible: Boolean,
+      visible: propTypes.bool,
     },
     emits: ['close'],
     setup(_, { emit }) {
@@ -143,10 +147,8 @@
     width: 100%;
     height: 100%;
     padding-top: 50px;
-    // background: #656c85cc;
     background: rgba(0, 0, 0, 0.25);
     justify-content: center;
-    // backdrop-filter: blur(2px);
 
     &--mobile {
       padding: 0;
@@ -188,12 +190,10 @@
     &-content {
       position: relative;
       width: 632px;
-      // padding: 14px;
       margin: 0 auto auto auto;
-      background: #f5f6f7;
+      background: @component-background;
       border-radius: 16px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      // box-shadow: inset 1px 1px 0 0 hsla(0, 0%, 100%, 0.5), 0 3px 8px 0 #555a64;
       flex-direction: column;
     }
 
@@ -251,11 +251,16 @@
         font-size: 14px;
         color: @text-color-base;
         cursor: pointer;
-        // background: @primary-color;
-        background: #fff;
+        background: @component-background;
         border-radius: 4px;
         box-shadow: 0 1px 3px 0 #d4d9e1;
         align-items: center;
+
+        > div:first-child,
+        > div:last-child {
+          display: flex;
+          align-items: center;
+        }
 
         &--active {
           color: #fff;

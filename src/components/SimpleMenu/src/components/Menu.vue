@@ -18,6 +18,7 @@
     getCurrentInstance,
     provide,
   } from 'vue';
+
   import { useDesign } from '/@/hooks/web/useDesign';
   import { propTypes } from '/@/utils/propTypes';
   import { createSimpleRootMenuContext } from './useSimpleMenuContext';
@@ -136,6 +137,15 @@
             props.collapse && removeAll();
           });
           emit('select', name);
+        });
+
+        rootMenuEmitter.on('open-name-change', ({ name, opened }) => {
+          if (opened && !openedNames.value.includes(name)) {
+            openedNames.value.push(name);
+          } else if (!opened) {
+            const index = openedNames.value.findIndex((item) => item === name);
+            index !== -1 && openedNames.value.splice(index, 1);
+          }
         });
       });
 

@@ -3,11 +3,11 @@ import { MockMethod } from 'vite-plugin-mock';
 
 // single
 const dashboardRoute = {
-  path: '/home',
-  name: 'Home',
-  component: '/dashboard/welcome/index',
+  path: '/dashboard',
+  name: 'Welcome',
+  component: '/dashboard/analysis/index',
   meta: {
-    title: 'routes.dashboard.welcome',
+    title: 'routes.dashboard.analysis',
     affix: true,
     icon: 'bx:bx-home',
   },
@@ -161,7 +161,7 @@ const levelRoute = {
 };
 export default [
   {
-    url: '/api/getMenuListById',
+    url: '/basic-api/getMenuListById',
     timeout: 1000,
     method: 'get',
     response: ({ query }) => {

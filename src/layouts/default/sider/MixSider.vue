@@ -101,7 +101,7 @@
 
   import clickOutside from '/@/directives/clickOutside';
   import { getShallowMenus, getChildrenMenus, getCurrentParentPath } from '/@/router/menus';
-  import { listenerLastChangeTab } from '/@/logics/mitt/tabChange';
+  import { listenerRouteChange } from '/@/logics/mitt/routeChange';
   import { SimpleMenu } from '/@/components/SimpleMenu';
 
   export default defineComponent({
@@ -202,7 +202,7 @@
         menuModules.value = await getShallowMenus();
       });
 
-      listenerLastChangeTab((route) => {
+      listenerRouteChange((route) => {
         currentRoute.value = route;
         setActive(true);
         if (unref(getCloseMixSidebarOnChange)) {
@@ -403,7 +403,7 @@
         }
       }
     }
-    @border-color: @sider-dark-lighten-1-bg-color;
+    @border-color: @sider-dark-lighten-bg-color;
 
     &.dark {
       &.open {

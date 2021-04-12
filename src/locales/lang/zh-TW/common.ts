@@ -14,4 +14,7 @@ export default {
 
   redo: '復原',
   back: '返回',
+
+  light: '明亮模式',
+  dark: '黑暗模式',
 };

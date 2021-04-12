@@ -14,6 +14,11 @@
   //     bottom: 1px;
   //   }
   // }
+  &-link:hover,
+  &-link:focus,
+  &-link:active {
+    border-color: transparent !important;
+  }
 
   &-primary {
     color: @white;
@@ -56,9 +61,9 @@
   &.ant-btn-link.is-disabled {
     color: rgba(0, 0, 0, 0.25) !important;
     text-shadow: none;
-    cursor: not-allowed;
-    background-color: transparent;
-    border-color: transparent;
+    cursor: not-allowed !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
     box-shadow: none;
   }
 
@@ -70,6 +75,7 @@
     &:hover,
     &:focus {
       color: @button-success-hover-color;
+      border-color: transparent;
     }
   }
 
@@ -111,6 +117,7 @@
     &:hover,
     &:focus {
       color: @button-warn-hover-color;
+      border-color: transparent;
     }
   }
 
@@ -144,6 +151,7 @@
     &:hover,
     &:focus {
       color: @button-error-hover-color;
+      border-color: transparent;
     }
   }
 
@@ -165,9 +173,6 @@
       color: @white;
       background-color: fade(@button-error-color, 40%);
       border-color: fade(@button-error-color, 40%);
-
-      // background-color: @button-error-disabled-color;
-      // border-color: @button-error-disabled-color ;
     }
   }
 
@@ -182,7 +187,7 @@
 
   &-ghost {
     color: @button-ghost-color;
-    background-color: @white;
+    background-color: transparent;
     border-color: @button-ghost-color;
     border-width: 1px;
 
@@ -198,6 +203,16 @@
       color: @button-ghost-color;
       background: fade(@white, 40%);
       border-color: fade(@button-ghost-color, 40%);
+    }
+  }
+
+  &-ghost.ant-btn-link:not([disabled='disabled']) {
+    color: @button-ghost-color;
+
+    &:hover,
+    &:focus {
+      color: @button-ghost-hover-color;
+      border-color: transparent;
     }
   }
 }

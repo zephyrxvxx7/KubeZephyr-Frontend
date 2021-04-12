@@ -2,9 +2,7 @@ import { generate } from '@ant-design/colors';
 
 export const primaryColor = '#0960bd';
 
-export const themeMode = 'light';
-
-export type ThemeMode = 'dark' | 'light';
+export const darkMode = 'light';
 
 type Fn = (...arg: any) => any;
 
@@ -15,18 +13,17 @@ export interface GenerateColorsParams {
   color?: string;
 }
 
-export function generateAntColors(color: string, mode: ThemeMode) {
+export function generateAntColors(color: string) {
   return generate(color, {
-    theme: mode == 'dark' ? 'dark' : 'default',
+    theme: 'default',
   });
 }
 
-export function getThemeColors(color?: string, theme?: ThemeMode) {
+export function getThemeColors(color?: string) {
   const tc = color || primaryColor;
-  const tm = theme || themeMode;
-  const colors = generateAntColors(tc, tm);
+  const colors = generateAntColors(tc);
   const primary = colors[5];
-  const modeColors = generateAntColors(primary, tm === 'dark' ? 'light' : 'dark');
+  const modeColors = generateAntColors(primary);
 
   return [...colors, ...modeColors];
 }
@@ -38,22 +35,24 @@ export function generateColors({
   tinycolor,
 }: GenerateColorsParams) {
   const arr = new Array(19).fill(0);
-  const lightens = arr.map((t, i) => {
+  const lightens = arr.map((_t, i) => {
     return mixLighten(color, i / 5);
   });
 
-  const darkens = arr.map((t, i) => {
+  const darkens = arr.map((_t, i) => {
     return mixDarken(color, i / 5);
   });
 
-  const alphaColors = arr.map((t, i) => {
+  const alphaColors = arr.map((_t, i) => {
     return tinycolor(color)
       .setAlpha(i / 20)
       .toRgbString();
   });
 
+  const shortAlphaColors = alphaColors.map((item) => item.replace(/\s/g, '').replace(/0\./g, '.'));
+
   const tinycolorLightens = arr
-    .map((t, i) => {
+    .map((_t, i) => {
       return tinycolor(color)
         .lighten(i * 5)
         .toHexString();
@@ -61,44 +60,18 @@ export function generateColors({
     .filter((item) => item !== '#ffffff');
 
   const tinycolorDarkens = arr
-    .map((t, i) => {
+    .map((_t, i) => {
       return tinycolor(color)
         .darken(i * 5)
         .toHexString();
     })
     .filter((item) => item !== '#000000');
-  return [...lightens, ...darkens, ...alphaColors, ...tinycolorDarkens, ...tinycolorLightens];
-}
-
-/**
- * less global variable
- */
-export function generateModifyVars() {
-  const palettes = generateAntColors(primaryColor, themeMode);
-  const primary = palettes[5];
-
-  const primaryColorObj: Record<string, string> = {};
-
-  for (let index = 0; index < 10; index++) {
-    primaryColorObj[`primary-${index + 1}`] = palettes[index];
-  }
-
-  return {
-    'primary-color': primary,
-    ...primaryColorObj,
-    'info-color': primary,
-    'processing-color': primary,
-    'success-color': '#55D187', //  Success color
-    'error-color': '#ED6F6F', //  False color
-    'warning-color': '#EFBD47', //   Warning color
-    'disabled-color': 'rgba(0, 0, 0, 0.25)', //  Failure color
-    'heading-color': 'rgba(0, 0, 0, 0.85)', //  Title color
-    'text-color': 'rgba(0, 0, 0, 0.85)', //  Main text color
-    'text-color-secondary': 'rgba(0, 0, 0, 0.45)', // Subtext color
-    'font-size-base': '14px', //  Main font size
-    'box-shadow-base': '0 2px 8px rgba(0, 0, 0, 0.15)', //  Floating shadow
-    'border-color-base': '#d9d9d9', //  Border color,
-    'border-radius-base': '2px', //  Component/float fillet
-    'link-color': primary, //   Link color
-  };
+  return [
+    ...lightens,
+    ...darkens,
+    ...alphaColors,
+    ...shortAlphaColors,
+    ...tinycolorDarkens,
+    ...tinycolorLightens,
+  ].filter((item) => !item.includes('-'));
 }

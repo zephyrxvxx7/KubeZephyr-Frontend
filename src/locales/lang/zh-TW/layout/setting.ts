@@ -27,8 +27,9 @@ export default {
   copyBtn: '複製',
   clearBtn: '清除暫存並且返回登錄頁面',
 
-  drawerTitle: '項目設定',
+  drawerTitle: '設定',
 
+  darkMode: '主題',
   navMode: '導航列模式',
   interfaceFunction: '介面功能',
   interfaceDisplay: '介面顯示',

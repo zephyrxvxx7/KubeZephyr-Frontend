@@ -38,8 +38,7 @@
 
   import { getCurrentParentPath } from '/@/router/menus';
 
-  // import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
-  import { listenerLastChangeTab } from '/@/logics/mitt/tabChange';
+  import { listenerRouteChange } from '/@/logics/mitt/routeChange';
   import { getAllParentPath } from '/@/router/helper/menuHelper';
 
   export default defineComponent({
@@ -47,7 +46,6 @@
     components: {
       Menu,
       BasicSubMenuItem,
-      // BasicSubMenuItem: createAsyncComponent(() => import('./components/BasicSubMenuItem.vue')),
     },
     props: basicProps,
     emits: ['menuClick'],
@@ -107,7 +105,7 @@
         return inlineCollapseOptions;
       });
 
-      listenerLastChangeTab((route) => {
+      listenerRouteChange((route) => {
         if (route.name === REDIRECT_NAME) return;
         handleMenuChange(route);
         currentActiveMenu.value = route.meta?.currentActiveMenu as string;

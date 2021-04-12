@@ -1,14 +1,104 @@
-## Wip
+## 2.3.0 (2021-04-10)
+
+## (破坏性更新) Breaking changes
+
+- 使用 `pinia` 替换 `vuex`,`vuex-module-decorators`。
+
+  - 影响，之前如果有自己使用 vuex-module-decorators，需要改造为 pinia。
+  - 原因：
+    - pinia 于 vuex5api 基本类似，且简单易懂。
+    - 后续切换 vuex5 成本非常低，也可以当作第三方状态管理库使用
+
+- 移除 `useKeyPress` 使用`vueuse`-`onKeyStroke`代替
+- 移除 `useDebounceFn` 使用`vueuse`-`useDebounceFn`代替
+- 移除 `useThrottle` 使用`vueuse`-`useThrottleFn`代替
+
+### ✨ Features
+
+- 标签页支持持久化保存
+
+### ✨ Refactor
+
+- 移除 `useElResize`
+
+### 🐛 Bug Fixes
+
+- 登录页样式修复
+- 修复菜单已知问题
+- 修复主题样式切换问题
+
+## 2.2.0 (2021-04-06)
+
+### ✨ Features
+
+- 新增`headerTitle` slot
+- 新增打印示例
+- 新增关于界面
+
+### ✨ Refactor
+
+- 移除 useFullScreen 函数
+- tinymce 由 Cdn 改为 npm(打包体积偏大)
+- Dashboard 重构
+- 移除 ApexCharts 及示例
+
+### 🐛 Bug Fixes
+
+- 确保面包屑正确的显示图标
+- 修复 tinymce 上传按钮全屏模式下消失问题
+- 确保 title 在重新登录后正常改变
+- 确保后台模式登录正常
+- 修复 TableAction 点击事件问题
+
+## 2.1.1 (2021-03-26)
+
+### ✨ Features
+
+- 路由新增 hideChildrenInMenu 配置。用于隐藏子菜单
+- 树形表格内置展开/折叠全部函数
+
+### ✨ Refactor
+
+- 重构路由多层模式,解决嵌套 keepalive 执行多次问题
+
+### 🐛 Bug Fixes
+
+- 确保 CountDownInput 组件重置清空值
+- 修复分割模式下在小屏幕中显示问题
+- 修复表格高度计算问题
+- 修复后台路由获取不到组件问题
+- 修复 Modal 组件 loadingTip 配置不生效
+- 修复后台权限指令不生效
+- 确保 progress 进度条正确关闭
+- 修复表格勾选列配置失效问题
+- 确保一级菜单可以被隐藏
+- 确保表单隐藏字段校验正常
+
+### 🎫 Chores
+
+- 移除 ls-lint
+
+## 2.1.0 (2021-03-15)
+
+### ✨ Features
+
+- 图标选择器新增 svg 模式
+- 新增时间组件
+- 新增高德/百度/谷歌地图示例
 
 ### ✨ Refactor
 
 - 重构项目以解决循环依赖项导致的热更新问题
+- 移除 vueHelper/useClickoutside,使用@vueuse/core 代替
 
 ### 🐛 Bug Fixes
 
 - 确保 `table action` 的值被正确更新
 - 修复页面切换的动画无法关闭
 - 修复`PageWrapper`title 不显示
+- 修复表格已知问题
+- 修复 BasicTree 组件不能自定义 title 问题
+- 修复主题切换后按钮样式问题
 
 ## 2.0.3 (2021-03-07)
 
