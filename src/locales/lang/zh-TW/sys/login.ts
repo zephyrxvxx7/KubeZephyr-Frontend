@@ -21,9 +21,14 @@ export default {
   loginSuccessTitle: '登入成功',
   loginSuccessDesc: '歡迎回來',
 
+  registerFailTitle: '註冊失敗',
+  registerFailDesc: '該信箱已經註冊或者是服務目前不可使用',
+
   // placeholder
+  emailPlaceholder: '請輸入電子信箱',
   accountPlaceholder: '請輸入帳號',
   passwordPlaceholder: '請輸入密碼',
+  realNamePlaceholder: '請輸入使用者名稱',
   smsPlaceholder: '請輸入驗證碼',
   mobilePlaceholder: '請輸入手機號碼',
   policyPlaceholder: '勾選後才能註冊',
@@ -32,6 +37,7 @@ export default {
   userName: '帳號',
   password: '密碼',
   confirmPassword: '確認密碼',
+  realName: '使用者名稱',
   email: '電子信箱',
   smsCode: '簡訊驗證碼',
   mobile: '手機號碼',

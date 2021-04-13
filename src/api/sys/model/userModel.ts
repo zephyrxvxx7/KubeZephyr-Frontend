@@ -41,3 +41,41 @@ export interface GetUserInfoByUserIdModel {
   // 介绍
   desc?: string;
 }
+
+export interface User {
+  email: string;
+  realName?: string;
+  desc?: string;
+  roles: Array<UserRole>;
+  token: string;
+  id: string;
+}
+
+export interface UserInCreate {
+  email: string;
+  password: string;
+  realName: string;
+  desc?: string;
+  roles?: Array<UserRole>;
+}
+
+export interface UserInLogin {
+  email: string;
+  password: string;
+}
+
+export interface UserInResponse {
+  user: User;
+}
+
+export interface UserInUpdate {
+  email?: string;
+  password?: string;
+  realName?: string;
+  desc?: string;
+}
+
+export interface UserRole {
+  roleName: string;
+  value: string;
+}

@@ -6,8 +6,6 @@ export enum LoginStateEnum {
   LOGIN,
   REGISTER,
   RESET_PASSWORD,
-  MOBILE,
-  QR_CODE,
 }
 
 const currentState = ref(LoginStateEnum.LOGIN);
@@ -40,14 +38,9 @@ export function useFormValid<T extends Object = any>(formRef: Ref<any>) {
 export function useFormRules(formData?: Recordable) {
   const { t } = useI18n();
 
-  const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
+  const getAccountFormRule = computed(() => createRule(t('sys.login.emailPlaceholder')));
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
-  const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
-  const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
-
-  const validatePolicy = async (_: RuleObject, value: boolean) => {
-    return !value ? Promise.reject(t('sys.login.policyPlaceholder')) : Promise.resolve();
-  };
+  const getRealNameFormRule = computed(() => createRule(t('sys.login.realNamePlaceholder')));
 
   const validateConfirmPassword = (password: string) => {
     return async (_: RuleObject, value: string) => {
@@ -64,36 +57,25 @@ export function useFormRules(formData?: Recordable) {
   const getFormRules = computed(() => {
     const accountFormRule = unref(getAccountFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
-    const smsFormRule = unref(getSmsFormRule);
-    const mobileFormRule = unref(getMobileFormRule);
+    const realNameFormRule = unref(getRealNameFormRule);
 
-    const mobileRule = {
-      sms: smsFormRule,
-      mobile: mobileFormRule,
-    };
     switch (unref(currentState)) {
       // register form rules
       case LoginStateEnum.REGISTER:
         return {
           account: accountFormRule,
           password: passwordFormRule,
+          realName: realNameFormRule,
           confirmPassword: [
             { validator: validateConfirmPassword(formData?.password), trigger: 'change' },
           ],
-          policy: [{ validator: validatePolicy, trigger: 'change' }],
-          ...mobileRule,
         };
 
       // reset password form rules
       case LoginStateEnum.RESET_PASSWORD:
         return {
           account: accountFormRule,
-          ...mobileRule,
         };
-
-      // mobile form rules
-      case LoginStateEnum.MOBILE:
-        return mobileRule;
 
       // login form rules
       default:

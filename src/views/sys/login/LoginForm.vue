@@ -2,7 +2,7 @@
   <LoginFormTitle v-show="getShow" class="enter-x" />
   <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef" v-show="getShow">
     <FormItem name="account" class="enter-x">
-      <Input size="large" v-model:value="formData.account" :placeholder="t('sys.login.userName')" />
+      <Input size="large" v-model:value="formData.account" :placeholder="t('sys.login.email')" />
     </FormItem>
     <FormItem name="password" class="enter-x">
       <InputPassword
@@ -97,7 +97,7 @@
       const rememberMe = ref(false);
 
       const formData = reactive({
-        account: 'zephyr',
+        account: 'zephyr@example.com',
         password: '123456',
       });
 
@@ -115,13 +115,15 @@
           const userInfo = await userStore.login(
             toRaw({
               password: data.password,
-              username: data.account,
+              email: data.account,
             })
           );
           if (userInfo) {
             notification.success({
               message: t('sys.login.loginSuccessTitle'),
-              description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+              description: `${t('sys.login.loginSuccessDesc')}: ${
+                userInfo.user.realName ?? userInfo.user.email
+              }`,
               duration: 3,
             });
           }
