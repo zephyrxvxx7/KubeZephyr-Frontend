@@ -59,7 +59,7 @@ export function usePermission() {
   function hasPermission(value?: RoleEnum | RoleEnum[] | string | string[], def = true): boolean {
     const permMode = projectSetting.permissionMode;
 
-    if (PermissionModeEnum.ROLE === permMode) {
+    if (PermissionModeEnum.ROLE === permMode || PermissionModeEnum.BACK === permMode) {
       // Visible by default
       if (!value) {
         return def;
@@ -70,17 +70,17 @@ export function usePermission() {
       return (intersection(value, userStore.getRoleList) as RoleEnum[]).length > 0;
     }
 
-    if (PermissionModeEnum.BACK === permMode) {
-      // Visible by default
-      if (!value) {
-        return def;
-      }
-      const allCodeList = permissionStore.getPermCodeList;
-      if (!isArray(value)) {
-        return allCodeList.includes(value as string);
-      }
-      return (intersection(value, allCodeList) as string[]).length > 0;
-    }
+    // if (PermissionModeEnum.BACK === permMode) {
+    //   // Visible by default
+    //   if (!value) {
+    //     return def;
+    //   }
+    //   const allCodeList = permissionStore.getPermCodeList;
+    //   if (!isArray(value)) {
+    //     return allCodeList.includes(value as string);
+    //   }
+    //   return (intersection(value, allCodeList) as string[]).length > 0;
+    // }
     return true;
   }
 

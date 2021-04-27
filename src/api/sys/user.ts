@@ -3,7 +3,6 @@ import {
   UserInLogin,
   UserInResponse,
   GetUserInfoByUserIdParams,
-  GetUserInfoByUserIdModel,
   UserInCreate,
 } from './model/userModel';
 
@@ -12,7 +11,6 @@ import { ErrorMessageMode } from '/@/utils/http/axios/types';
 enum Api {
   Login = '/users/login',
   Register = '/users',
-  GetUserInfoById = '/getUserInfoById',
   GetPermCodeByUserId = '/getPermCodeByUserId',
 }
 
@@ -46,16 +44,6 @@ export function registerAPI(params: UserInCreate, mode: ErrorMessageMode = 'moda
       isTransformRequestResult: false,
     }
   );
-}
-
-/**
- * @description: getUserInfoById
- */
-export function getUserInfoById(params: GetUserInfoByUserIdParams) {
-  return defHttp.get<GetUserInfoByUserIdModel>({
-    url: Api.GetUserInfoById,
-    params,
-  });
 }
 
 export function getPermCodeByUserId(params: GetUserInfoByUserIdParams) {

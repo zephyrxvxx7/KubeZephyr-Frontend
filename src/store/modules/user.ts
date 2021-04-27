@@ -3,6 +3,8 @@ import type { ErrorMessageMode } from '/@/utils/http/axios/types';
 
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
+import { useResourceStore } from '/@/store/modules/resource';
+import { usePermission } from '/@/hooks/web/usePermission';
 
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
@@ -72,6 +74,8 @@ export const useUserStore = defineStore({
       }
     ): Promise<UserInResponse | null> {
       try {
+        const { hasPermission } = usePermission();
+
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
 
@@ -88,8 +92,10 @@ export const useUserStore = defineStore({
           desc: desc,
         });
         this.setRoleList(roleList);
-        // get user info
-        // const userInfo = await this.getUserInfoAction({ userId });
+
+        if (hasPermission(RoleEnum.USER)) {
+          this.resourceInit(params);
+        }
 
         goHome && (await router.replace(PageEnum.BASE_HOME));
         return data;
@@ -121,8 +127,6 @@ export const useUserStore = defineStore({
           desc: desc,
         });
         this.setRoleList(roleList);
-        // get user info
-        // const userInfo = await this.getUserInfoAction({ userId });
 
         goHome && (await router.replace(PageEnum.BASE_HOME));
         return data;
@@ -130,14 +134,14 @@ export const useUserStore = defineStore({
         return null;
       }
     },
-    // async getUserInfoAction({ userId }: GetUserInfoByUserIdParams) {
-    //   const userInfo = await getUserInfoById({ userId });
-    //   const { roles } = userInfo;
-    //   const roleList = roles.map((item) => item.value) as RoleEnum[];
-    //   this.setUserInfo(userInfo);
-    //   this.setRoleList(roleList);
-    //   return userInfo;
-    // },
+
+    async resourceInit(params: { mode?: ErrorMessageMode }) {
+      const { getPodListFromAPI, getPvcListFromAPI } = useResourceStore();
+
+      await getPodListFromAPI(params);
+      await getPvcListFromAPI(params);
+    },
+
     /**
      * @description: logout
      */

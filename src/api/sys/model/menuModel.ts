@@ -4,6 +4,7 @@ export interface RouteItem {
   component: any;
   meta: RouteMeta;
   name?: string;
+  props?: Recordable;
   alias?: string | string[];
   redirect?: string;
   caseSensitive?: boolean;

@@ -2,29 +2,21 @@ import type { MenuModule } from '/@/router/types';
 import { t } from '/@/hooks/web/useI18n';
 
 const menu: MenuModule = {
-  orderNo: 10,
+  orderNo: 1,
   menu: {
     name: t('routes.dashboard.dashboard'),
     path: '/dashboard',
     tag: {
       dot: true,
-      type: 'warn',
+      type: 'success',
     },
     children: [
       {
-        path: 'analysis',
-        name: t('routes.dashboard.analysis'),
+        name: t('routes.dashboard.overview'),
+        path: 'overview',
         tag: {
           dot: true,
-          type: 'warn',
-        },
-      },
-      {
-        path: 'workbench',
-        name: t('routes.dashboard.workbench'),
-        tag: {
-          dot: true,
-          type: 'warn',
+          type: 'primary',
         },
       },
     ],

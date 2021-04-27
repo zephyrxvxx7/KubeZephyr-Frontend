@@ -5,29 +5,21 @@ import { t } from '/@/hooks/web/useI18n';
 
 const dashboard: AppRouteModule = {
   path: '/dashboard',
-  name: 'Dashboard',
+  name: t('routes.dashboard.dashboard'),
   component: LAYOUT,
-  redirect: '/dashboard/analysis',
+  redirect: '/dashboard/overview',
   meta: {
     icon: 'ion:grid-outline',
     title: t('routes.dashboard.dashboard'),
   },
   children: [
     {
-      path: 'analysis',
-      name: 'Analysis',
-      component: () => import('/@/views/dashboard/analysis/index.vue'),
+      path: 'overview',
+      name: 'namespaceOverview',
+      component: () => import('/@/views/dashboard/namespaceOverview/index.vue'),
       meta: {
         affix: true,
-        title: t('routes.dashboard.analysis'),
-      },
-    },
-    {
-      path: 'workbench',
-      name: 'Workbench',
-      component: () => import('/@/views/dashboard/workbench/index.vue'),
-      meta: {
-        title: t('routes.dashboard.workbench'),
+        title: t('routes.dashboard.overview'),
       },
     },
   ],

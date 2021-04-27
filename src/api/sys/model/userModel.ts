@@ -56,7 +56,6 @@ export interface UserInCreate {
   password: string;
   realName: string;
   desc?: string;
-  roles?: Array<UserRole>;
 }
 
 export interface UserInLogin {
@@ -78,4 +77,16 @@ export interface UserInUpdate {
 export interface UserRole {
   roleName: string;
   value: string;
+}
+
+export interface ManyUser {
+  email: string;
+  realName?: string;
+  desc?: string;
+  roles: Array<UserRole>;
+  id: string;
+}
+
+export interface ManyUserInResponse {
+  user: Array<ManyUser>;
 }

@@ -141,7 +141,7 @@ const transform: AxiosTransform = {
     const token = getToken();
     if (token) {
       // jwt token
-      config.headers.Authorization = token;
+      config.headers.Authorization = `Token ${token}`;
     }
     return config;
   },
@@ -154,7 +154,8 @@ const transform: AxiosTransform = {
     const errorLogStore = useErrorLogStoreWithOut();
     errorLogStore.addAjaxErrorInfo(error);
     const { response, code, message } = error || {};
-    const msg: string = response?.data?.error?.message ?? '';
+    const status: number = error?.response?.status ?? 418;
+    const msg: string = response?.data?.detail ?? '';
     const err: string = error?.toString?.() ?? '';
     try {
       if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {
@@ -169,7 +170,7 @@ const transform: AxiosTransform = {
     } catch (error) {
       throw new Error(error);
     }
-    checkStatus(error?.response?.status, msg);
+    checkStatus(status, msg);
     return Promise.reject(error);
   },
 };

@@ -8,6 +8,9 @@ import {
   TOKEN_KEY,
   USER_INFO_KEY,
   ROLES_KEY,
+  POD_LIST,
+  PVC_LIST,
+  INGRESS_LIST,
   LOCK_INFO_KEY,
   PROJ_CFG_KEY,
   APP_LOCAL_CACHE_KEY,
@@ -21,6 +24,9 @@ interface BasicStore {
   [TOKEN_KEY]: string | number | null | undefined;
   [USER_INFO_KEY]: UserInfo;
   [ROLES_KEY]: string[];
+  [POD_LIST]: string[];
+  [PVC_LIST]: string[];
+  [INGRESS_LIST]: string[];
   [LOCK_INFO_KEY]: LockInfo;
   [PROJ_CFG_KEY]: ProjectConfig;
   [MULTIPLE_TABS_KEY]: RouteLocationNormalized[];

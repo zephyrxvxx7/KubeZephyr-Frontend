@@ -32,6 +32,12 @@ export function checkStatus(status: number, msg: string): void {
     case 408:
       error(t('sys.api.errMsg408'));
       break;
+    case 418:
+      error(t('sys.api.errMsg418'));
+      break;
+    case 422:
+      error(t('sys.api.errMsg422'));
+      break;
     case 500:
       error(t('sys.api.errMsg500'));
       break;

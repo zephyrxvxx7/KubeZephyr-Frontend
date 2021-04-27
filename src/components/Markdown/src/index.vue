@@ -20,7 +20,7 @@
   import { useModalContext } from '../../Modal';
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
 
-  type Lang = 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
+  type Lang = 'zh_TW' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
   export default defineComponent({
     inheritAttrs: false,
     props: {
@@ -55,7 +55,7 @@
         }
       );
 
-      const getCurrentLang = computed((): 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' => {
+      const getCurrentLang = computed((): 'zh_TW' | 'en_US' | 'ja_JP' | 'ko_KR' => {
         let lang: Lang;
         switch (unref(getLocale)) {
           case 'en':
@@ -68,7 +68,7 @@
             lang = 'ko_KR';
             break;
           default:
-            lang = 'zh_CN';
+            lang = 'zh_TW';
         }
         return lang;
       });
