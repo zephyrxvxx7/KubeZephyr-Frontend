@@ -43,7 +43,7 @@
           text: '上一步',
         },
         submitButtonOptions: {
-          text: '新增',
+          text: '部署',
         },
         resetFunc: customResetFunc,
         submitFunc: customSubmitFunc,
@@ -125,12 +125,12 @@
             },
           });
           setTimeout(() => {
+            emit('next', result.length > 0 ? result : undefined);
             setProps({
               submitButtonOptions: {
                 loading: false,
               },
             });
-            emit('next', result ?? undefined);
           }, 1500);
         } catch (error) {}
       }

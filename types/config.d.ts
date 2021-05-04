@@ -141,6 +141,8 @@ export interface GlobConfig {
   uploadUrl?: string;
   //  Service interface url prefix
   urlPrefix?: string;
+  // Web socket interface url
+  wsUrl: string;
   // Project abbreviation
   shortName: string;
 }
@@ -151,6 +153,8 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL: string;
   // Service interface url prefix
   VITE_GLOB_API_URL_PREFIX?: string;
+  // Web socket interface url
+  VITE_GLOB_WS_URL: string;
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string;
   // Upload url

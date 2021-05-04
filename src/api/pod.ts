@@ -3,6 +3,7 @@ import {
   ManyPodInResponse,
   PodInCreate,
   PodInResponse,
+  PodInResponseStatus,
   PodInUpdate,
 } from './model/resources/podModel';
 
@@ -12,7 +13,6 @@ import { ErrorMessageMode } from '/@/utils/http/axios/types';
  * @description: create pod API with authorization
  */
 export function createPodApi(params: PodInCreate, mode: ErrorMessageMode = 'message') {
-  console.log(params);
   return defHttp.post<PodInResponse>(
     {
       url: '/resources/pod',
@@ -47,6 +47,18 @@ export function getPodLogByNameAPI(name: string, mode: ErrorMessageMode = 'modal
   return defHttp.get<string>(
     {
       url: `/resources/pod/${name}/log`,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}
+
+export function getPodStatusByNameAPI(name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.get<PodInResponseStatus>(
+    {
+      url: `/resources/pod/${name}/status`,
     },
     {
       errorMessageMode: mode,

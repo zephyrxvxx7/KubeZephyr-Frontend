@@ -1,5 +1,5 @@
 import { ObjectMeta } from './objectMetaModel';
-import { PodSpec } from './resourcesModel';
+import { PodSpec, PodStatus } from './resourcesModel';
 
 export interface PodInCreate {
   metadata: ObjectMeta;
@@ -11,6 +11,10 @@ export interface PodInResponse {
 }
 export interface PodInUpdate {
   spec?: PodSpec;
+}
+
+export interface PodInResponseStatus {
+  status: PodStatus;
 }
 
 export interface ManyPodInResponse {

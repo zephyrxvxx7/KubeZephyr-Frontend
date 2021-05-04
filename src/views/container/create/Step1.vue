@@ -12,14 +12,14 @@
 
         <BasicForm @register="registerPvc">
           <template #add="{ field }">
-            <Button v-if="Number(field) === 0" @click="add">+</Button>
-            <Button v-if="Number(field) > 0" @click="del(field)">-</Button>
+            <a-button v-if="Number(field) === 0" @click="add">+</a-button>
+            <a-button v-if="Number(field) > 0" @click="del(field)">-</a-button>
           </template>
         </BasicForm>
       </div>
 
       <div align="center">
-        <Button type="primary" @click="customSubmitFunc"> 下一步 </Button>
+        <a-button type="primary" @click="customSubmitFunc"> 下一步 </a-button>
       </div>
     </div>
 
@@ -42,7 +42,6 @@
 <script lang="ts">
   import { defineComponent, ref, unref, toRaw } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { Button } from '/@/components/Button';
   import { step1Schemas, step1PvcSchemas } from './data';
   import { Alert, Input, Divider } from 'ant-design-vue';
 
@@ -53,7 +52,6 @@
   export default defineComponent({
     components: {
       BasicForm,
-      Button,
       [Alert.name]: Alert,
       [Input.name]: Input,
       [Divider.name]: Divider,
@@ -142,10 +140,17 @@
 
       async function customSubmitFunc() {
         try {
-          if (resourceStore.getPvcList.length > 0) {
-            const [values, pvcValues] = await Promise.all([validate(), validatePvcForm()]);
+          const values = await validate();
 
-            const pvcResult: Array<{ pvc: string; mountPath: string }> = [];
+          if (values['limit_cpu']) values.limit_cpu = `${values.limit_cpu}`;
+
+          if (values['limit_memory']) values.limit_memory = `${values.limit_memory}Mi`;
+
+          let pvcResult: Array<{ pvc: string; mountPath: string }> | undefined = undefined;
+          if (resourceStore.getPvcList.length > 0) {
+            const pvcValues = await validatePvcForm();
+
+            pvcResult = [];
             for (let index = 0; index < n.value; index++) {
               if (pvcValues[`pvc${index}`]) {
                 pvcResult.push({
@@ -154,13 +159,10 @@
                 });
               }
             }
-
-            emit('next', values, pvcResult);
-          } else {
-            const values = await validate();
-
-            emit('next', values, []);
+            pvcResult = pvcResult.length > 0 ? pvcResult : undefined;
           }
+
+          emit('next', values, pvcResult);
         } catch (error) {}
       }
 

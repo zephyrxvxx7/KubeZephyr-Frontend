@@ -3,8 +3,9 @@
     <div v-if="createSuccess">
       <a-result status="success" title="操作成功" sub-title="容器部署中...">
         <template #extra>
-          <a-button type="primary" @click="redo"> 再新增一個容器 </a-button>
-          <a-button> 查看詳情 </a-button>
+          <a-button type="primary" @click="redo"> 再部署一個容器 </a-button>
+          <!-- <a-button type="primary" @click="openInfoDrawer(true)"> 查看詳情 </a-button>
+          <InfoDrawer :podName="name" @register="registerInfo" /> -->
         </template>
       </a-result>
       <div class="desc-wrap">
@@ -21,12 +22,20 @@
           <a-button key="console" type="primary" @click="redo"> 返回修改 </a-button>
         </template>
       </a-result>
+      <div class="desc-wrap">
+        <a-descriptions :column="1" class="mt-5">
+          <a-descriptions-item label="錯誤訊息"> {{ errorMsg }} </a-descriptions-item>
+        </a-descriptions>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Result, Descriptions } from 'ant-design-vue';
+
+  import { useDrawer } from '/@/components/Drawer';
+
   import { propTypes } from '/@/utils/propTypes';
   export default defineComponent({
     components: {
@@ -39,10 +48,15 @@
       image: propTypes.string,
       port: propTypes.string,
       createSuccess: propTypes.bool,
+      errorMsg: propTypes.string,
     },
     emits: ['redo'],
     setup(_, { emit }) {
+      const [registerInfo, { openDrawer: openInfoDrawer }] = useDrawer();
+
       return {
+        registerInfo,
+        openInfoDrawer,
         redo: () => {
           emit('redo');
         },

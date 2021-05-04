@@ -531,6 +531,173 @@ export interface ContainerPort {
 /**
  *
  * @export
+ * @interface ContainerState
+ */
+export interface ContainerState {
+  /**
+   * Details about a running container
+   * @type {ContainerStateRunning}
+   * @memberof ContainerState
+   */
+  running?: ContainerStateRunning;
+  /**
+   * Details about a terminated container
+   * @type {ContainerStateTerminated}
+   * @memberof ContainerState
+   */
+  terminated?: ContainerStateTerminated;
+  /**
+   * Details about a waiting container
+   * @type {ContainerStateWaiting}
+   * @memberof ContainerState
+   */
+  waiting?: ContainerStateWaiting;
+}
+/**
+ *
+ * @export
+ * @interface ContainerStateRunning
+ */
+export interface ContainerStateRunning {
+  /**
+   * Time at which the container was last (re-)started
+   * @type {string}
+   * @memberof ContainerStateRunning
+   */
+  startedAt?: string;
+}
+/**
+ *
+ * @export
+ * @interface ContainerStateTerminated
+ */
+export interface ContainerStateTerminated {
+  /**
+   * Container\'s ID in the format \'docker://<container_id>\'
+   * @type {string}
+   * @memberof ContainerStateTerminated
+   */
+  containerID?: string;
+  /**
+   * Exit status from the last termination of the container
+   * @type {number}
+   * @memberof ContainerStateTerminated
+   */
+  exitCode: number;
+  /**
+   * Time at which the container last terminated
+   * @type {string}
+   * @memberof ContainerStateTerminated
+   */
+  finishedAt?: string;
+  /**
+   * Message regarding the last termination of the container
+   * @type {string}
+   * @memberof ContainerStateTerminated
+   */
+  message?: string;
+  /**
+   * (brief) reason from the last termination of the container
+   * @type {string}
+   * @memberof ContainerStateTerminated
+   */
+  reason?: string;
+  /**
+   * Signal from the last termination of the container
+   * @type {number}
+   * @memberof ContainerStateTerminated
+   */
+  signal?: number;
+  /**
+   * Time at which previous execution of the container started
+   * @type {string}
+   * @memberof ContainerStateTerminated
+   */
+  startedAt?: string;
+}
+/**
+ *
+ * @export
+ * @interface ContainerStateWaiting
+ */
+export interface ContainerStateWaiting {
+  /**
+   * Message regarding why the container is not yet running.
+   * @type {string}
+   * @memberof ContainerStateWaiting
+   */
+  message?: string;
+  /**
+   * (brief) reason the container is not yet running.
+   * @type {string}
+   * @memberof ContainerStateWaiting
+   */
+  reason?: string;
+}
+/**
+ *
+ * @export
+ * @interface ContainerStatus
+ */
+export interface ContainerStatus {
+  /**
+   * Container\'s ID in the format \'docker://<container_id>\'.
+   * @type {string}
+   * @memberof ContainerStatus
+   */
+  containerID?: string;
+  /**
+   * The image the container is running. More info: https://kubernetes.io/docs/concepts/containers/images
+   * @type {string}
+   * @memberof ContainerStatus
+   */
+  image: string;
+  /**
+   * ImageID of the container\'s image.
+   * @type {string}
+   * @memberof ContainerStatus
+   */
+  imageID: string;
+  /**
+   * Details about the container\'s last termination condition.
+   * @type {ContainerState}
+   * @memberof ContainerStatus
+   */
+  lastState?: ContainerState;
+  /**
+   * This must be a DNS_LABEL. Each container in a pod must have a unique name. Cannot be updated.
+   * @type {string}
+   * @memberof ContainerStatus
+   */
+  name: string;
+  /**
+   * Specifies whether the container has passed its readiness probe.
+   * @type {boolean}
+   * @memberof ContainerStatus
+   */
+  ready: boolean;
+  /**
+   * The number of times the container has been restarted, currently based on the number of dead containers that have not yet been removed. Note that this is calculated from dead containers. But those containers are subject to garbage collection. This value will get capped at 5 by GC.
+   * @type {number}
+   * @memberof ContainerStatus
+   */
+  restartCount: number;
+  /**
+   * Specifies whether the container has passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. Is always true when no startupProbe is defined.
+   * @type {boolean}
+   * @memberof ContainerStatus
+   */
+  started?: boolean;
+  /**
+   * Details about the container\'s current condition.
+   * @type {ContainerState}
+   * @memberof ContainerStatus
+   */
+  state?: ContainerState;
+}
+/**
+ *
+ * @export
  * @interface DownwardAPIProjection
  */
 export interface DownwardAPIProjection {
@@ -1391,12 +1558,6 @@ export interface ManagedFieldsEntry {
    */
   time?: string;
 }
-
-/**
- *
- * @export
- * @interface NFSVolumeSource
- */
 export interface NFSVolumeSource {
   /**
    * Path that is exported by the NFS server. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
@@ -1830,6 +1991,49 @@ export interface PodAntiAffinity {
 /**
  *
  * @export
+ * @interface PodCondition
+ */
+export interface PodCondition {
+  /**
+   * Last time we probed the condition.
+   * @type {string}
+   * @memberof PodCondition
+   */
+  lastProbeTime?: string;
+  /**
+   * Last time the condition transitioned from one status to another.
+   * @type {string}
+   * @memberof PodCondition
+   */
+  lastTransitionTime?: string;
+  /**
+   * Human-readable message indicating details about last transition.
+   * @type {string}
+   * @memberof PodCondition
+   */
+  message?: string;
+  /**
+   * Unique, one-word, CamelCase reason for the condition\'s last transition.
+   * @type {string}
+   * @memberof PodCondition
+   */
+  reason?: string;
+  /**
+   * Status is the status of the condition. Can be True, False, Unknown. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions
+   * @type {string}
+   * @memberof PodCondition
+   */
+  status: string;
+  /**
+   * Type is the type of the condition. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions
+   * @type {string}
+   * @memberof PodCondition
+   */
+  type: string;
+}
+/**
+ *
+ * @export
  * @interface PodDNSConfig
  */
 export interface PodDNSConfig {
@@ -1870,6 +2074,19 @@ export interface PodDNSConfigOption {
    * @memberof PodDNSConfigOption
    */
   value?: string;
+}
+/**
+ *
+ * @export
+ * @interface PodIP
+ */
+export interface PodIP {
+  /**
+   * ip is an IP address (IPv4 or IPv6) assigned to the pod
+   * @type {string}
+   * @memberof PodIP
+   */
+  ip?: string;
 }
 /**
  *
@@ -2171,6 +2388,91 @@ export interface PodSpec {
 /**
  *
  * @export
+ * @interface PodStatus
+ */
+export interface PodStatus {
+  /**
+   * Current service state of pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions
+   * @type {Array<PodCondition>}
+   * @memberof PodStatus
+   */
+  conditions?: Array<PodCondition>;
+  /**
+   * The list has one entry per container in the manifest. Each entry is currently the output of `docker inspect`. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status
+   * @type {Array<ContainerStatus>}
+   * @memberof PodStatus
+   */
+  containerStatuses?: Array<ContainerStatus>;
+  /**
+   * Status for any ephemeral containers that have run in this pod. This field is alpha-level and is only populated by servers that enable the EphemeralContainers feature.
+   * @type {Array<ContainerStatus>}
+   * @memberof PodStatus
+   */
+  ephemeralContainerStatuses?: Array<ContainerStatus>;
+  /**
+   * IP address of the host to which the pod is assigned. Empty if not yet scheduled.
+   * @type {string}
+   * @memberof PodStatus
+   */
+  hostIP?: string;
+  /**
+   * The list has one entry per init container in the manifest. The most recent successful init container will have ready = true, the most recently started container will have startTime set. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status
+   * @type {Array<ContainerStatus>}
+   * @memberof PodStatus
+   */
+  initContainerStatuses?: Array<ContainerStatus>;
+  /**
+   * A human readable message indicating details about why the pod is in this condition.
+   * @type {string}
+   * @memberof PodStatus
+   */
+  message?: string;
+  /**
+   * nominatedNodeName is set only when this pod preempts other pods on the node, but it cannot be scheduled right away as preemption victims receive their graceful termination periods. This field does not guarantee that the pod will be scheduled on this node. Scheduler may decide to place the pod elsewhere if other nodes become available sooner. Scheduler may also decide to give the resources on this node to a higher priority pod that is created after preemption. As a result, this field may be different than PodSpec.nodeName when the pod is scheduled.
+   * @type {string}
+   * @memberof PodStatus
+   */
+  nominatedNodeName?: string;
+  /**
+   * The phase of a Pod is a simple, high-level summary of where the Pod is in its lifecycle. The conditions array, the reason and message fields, and the individual container status arrays contain more detail about the pod\'s status. There are five possible phase values:  Pending: The pod has been accepted by the Kubernetes system, but one or more of the container images has not been created. This includes time before being scheduled as well as time spent downloading images over the network, which could take a while. Running: The pod has been bound to a node, and all of the containers have been created. At least one container is still running, or is in the process of starting or restarting. Succeeded: All containers in the pod have terminated in success, and will not be restarted. Failed: All containers in the pod have terminated, and at least one container has terminated in failure. The container either exited with non-zero status or was terminated by the system. Unknown: For some reason the state of the pod could not be obtained, typically due to an error in communicating with the host of the pod.  More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-phase
+   * @type {string}
+   * @memberof PodStatus
+   */
+  phase?: string;
+  /**
+   * IP address allocated to the pod. Routable at least within the cluster. Empty if not yet allocated.
+   * @type {string}
+   * @memberof PodStatus
+   */
+  podIP?: string;
+  /**
+   * podIPs holds the IP addresses allocated to the pod. If this field is specified, the 0th entry must match the podIP field. Pods may be allocated at most 1 value for each of IPv4 and IPv6. This list is empty if no IPs have been allocated yet.
+   * @type {Array<PodIP>}
+   * @memberof PodStatus
+   */
+  podIPs?: Array<PodIP>;
+  /**
+   * The Quality of Service (QOS) classification assigned to the pod based on resource requirements See PodQOSClass type for available QOS classes More info: https://git.k8s.io/community/contributors/design-proposals/node/resource-qos.md
+   * @type {string}
+   * @memberof PodStatus
+   */
+  qosClass?: string;
+  /**
+   * A brief CamelCase message indicating details about why the pod is in this state. e.g. \'Evicted\'
+   * @type {string}
+   * @memberof PodStatus
+   */
+  reason?: string;
+  /**
+   * RFC 3339 date and time at which the object was acknowledged by the Kubelet. This is before the Kubelet pulled the container image(s) for the pod.
+   * @type {string}
+   * @memberof PodStatus
+   */
+  startTime?: string;
+}
+/**
+ *
+ * @export
  * @interface PortworxVolumeSource
  */
 export interface PortworxVolumeSource {
@@ -2267,141 +2569,6 @@ export interface Probe {
    */
   timeoutSeconds?: number;
 }
-/**
- *
- * @export
- * @interface ProjectInCreate
- */
-export interface ProjectInCreate {
-  /**
-   *
-   * @type {string}
-   * @memberof ProjectInCreate
-   */
-  name: string;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInCreate
-   */
-  pod?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInCreate
-   */
-  service?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInCreate
-   */
-  volume?: Array<string>;
-}
-/**
- *
- * @export
- * @interface ProjectInDB
- */
-export interface ProjectInDB {
-  /**
-   *
-   * @type {string}
-   * @memberof ProjectInDB
-   */
-  name: string;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInDB
-   */
-  pod?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInDB
-   */
-  service?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInDB
-   */
-  volume?: Array<string>;
-  /**
-   *
-   * @type {string}
-   * @memberof ProjectInDB
-   */
-  createdAt?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof ProjectInDB
-   */
-  updatedAt?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof ProjectInDB
-   */
-  id?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof ProjectInDB
-   */
-  owner_id: string;
-}
-/**
- *
- * @export
- * @interface ProjectInResponse
- */
-export interface ProjectInResponse {
-  /**
-   *
-   * @type {ProjectInDB}
-   * @memberof ProjectInResponse
-   */
-  project: ProjectInDB;
-}
-/**
- *
- * @export
- * @interface ProjectInUpdate
- */
-export interface ProjectInUpdate {
-  /**
-   *
-   * @type {string}
-   * @memberof ProjectInUpdate
-   */
-  name?: string;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInUpdate
-   */
-  pod?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInUpdate
-   */
-  service?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProjectInUpdate
-   */
-  volume?: Array<string>;
-}
-/**
- *
- * @export
- * @interface ProjectedVolumeSource
- */
 export interface ProjectedVolumeSource {
   /**
    * Mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.
@@ -2416,11 +2583,6 @@ export interface ProjectedVolumeSource {
    */
   sources: Array<VolumeProjection>;
 }
-/**
- *
- * @export
- * @interface QuobyteVolumeSource
- */
 export interface QuobyteVolumeSource {
   /**
    * Group to map volume access to Default is no group
@@ -2657,6 +2819,181 @@ export interface ResourceUsedInResponse {
    * @memberof ResourceUsedInResponse
    */
   resource_used: ResourceQuotaBase;
+}
+/**
+ * An enumeration.
+ * @export
+ * @enum {string}
+ */
+export enum RoleEnum {
+  Super = 'super',
+  Test = 'test',
+  User = 'user',
+}
+
+/**
+ *
+ * @export
+ * @interface RouteItem
+ */
+export interface RouteItem {
+  /**
+   *
+   * @type {string}
+   * @memberof RouteItem
+   */
+  path: string;
+  /**
+   *
+   * @type {any}
+   * @memberof RouteItem
+   */
+  component?: any | null;
+  /**
+   *
+   * @type {RouteMeta}
+   * @memberof RouteItem
+   */
+  meta: RouteMeta;
+  /**
+   *
+   * @type {string}
+   * @memberof RouteItem
+   */
+  name?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof RouteItem
+   */
+  props?: { [key: string]: string };
+  /**
+   *
+   * @type {string | Array<string>}
+   * @memberof RouteItem
+   */
+  alias?: string | Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof RouteItem
+   */
+  redirect?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteItem
+   */
+  caseSensitive?: boolean;
+  /**
+   *
+   * @type {Array<RouteItem>}
+   * @memberof RouteItem
+   */
+  children?: Array<RouteItem>;
+}
+/**
+ *
+ * @export
+ * @interface RouteMeta
+ */
+export interface RouteMeta {
+  /**
+   *
+   * @type {string}
+   * @memberof RouteMeta
+   */
+  title: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  ignoreAuth?: boolean;
+  /**
+   *
+   * @type {Array<RoleEnum>}
+   * @memberof RouteMeta
+   */
+  roles?: Array<RoleEnum>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  ignoreKeepAlive?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  affix?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof RouteMeta
+   */
+  icon?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RouteMeta
+   */
+  frameSrc?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RouteMeta
+   */
+  transitionName?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  hideBreadcrumb?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  hideChildrenInMenu?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  carryParam?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  single?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof RouteMeta
+   */
+  currentActiveMenu?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  hideTab?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  hideMenu?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RouteMeta
+   */
+  isLink?: boolean;
 }
 /**
  *
@@ -3141,173 +3478,6 @@ export interface TypedLocalObjectReference {
    */
   name: string;
 }
-/**
- *
- * @export
- * @interface User
- */
-export interface User {
-  /**
-   *
-   * @type {string}
-   * @memberof User
-   */
-  email: string;
-  /**
-   *
-   * @type {string}
-   * @memberof User
-   */
-  realName?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof User
-   */
-  desc?: string;
-  /**
-   *
-   * @type {Array<UserRole>}
-   * @memberof User
-   */
-  roles: Array<UserRole>;
-  /**
-   *
-   * @type {string}
-   * @memberof User
-   */
-  token: string;
-  /**
-   *
-   * @type {string}
-   * @memberof User
-   */
-  id: string;
-}
-/**
- *
- * @export
- * @interface UserInCreate
- */
-export interface UserInCreate {
-  /**
-   *
-   * @type {string}
-   * @memberof UserInCreate
-   */
-  email: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserInCreate
-   */
-  password: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserInCreate
-   */
-  realName: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserInCreate
-   */
-  desc?: string;
-  /**
-   *
-   * @type {Array<UserRole>}
-   * @memberof UserInCreate
-   */
-  roles?: Array<UserRole>;
-}
-/**
- *
- * @export
- * @interface UserInLogin
- */
-export interface UserInLogin {
-  /**
-   *
-   * @type {string}
-   * @memberof UserInLogin
-   */
-  email: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserInLogin
-   */
-  password: string;
-}
-/**
- *
- * @export
- * @interface UserInResponse
- */
-export interface UserInResponse {
-  /**
-   *
-   * @type {User}
-   * @memberof UserInResponse
-   */
-  user: User;
-}
-/**
- *
- * @export
- * @interface UserInUpdate
- */
-export interface UserInUpdate {
-  /**
-   *
-   * @type {string}
-   * @memberof UserInUpdate
-   */
-  email?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserInUpdate
-   */
-  password?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserInUpdate
-   */
-  realName?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserInUpdate
-   */
-  desc?: string;
-}
-/**
- *
- * @export
- * @interface UserRole
- */
-export interface UserRole {
-  /**
-   *
-   * @type {string}
-   * @memberof UserRole
-   */
-  roleName: string;
-  /**
-   *
-   * @type {string}
-   * @memberof UserRole
-   */
-  value: string;
-}
-/**
- *
- * @export
- * @interface ValidationError
- */
 export interface ValidationError {
   /**
    *
