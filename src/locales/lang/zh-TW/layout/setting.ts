@@ -35,7 +35,7 @@ export default {
   interfaceDisplay: '介面顯示',
   animation: '動畫',
   splitMenu: '分割功能列',
-  closeMixSidebarOnChange: '切換頁面關閉功能列',
+  closeMixSidebarOnChange: '切換頁面關閉側邊欄',
 
   sysTheme: '系統主題',
   headerTheme: '頂列主題',

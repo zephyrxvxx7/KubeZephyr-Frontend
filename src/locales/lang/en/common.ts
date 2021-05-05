@@ -8,9 +8,16 @@ export default {
   resetText: 'Reset',
   searchText: 'Search',
   queryText: 'Search',
+  requiredText: 'Required',
 
-  inputText: 'Please enter',
-  chooseText: 'Please choose',
+  prevText: 'Previous',
+  nextText: 'Next',
+
+  successText: 'Success',
+  failText: 'Failure',
+
+  inputText: 'Please enter ',
+  chooseText: 'Please choose ',
 
   redo: 'Refresh',
   back: 'Back',

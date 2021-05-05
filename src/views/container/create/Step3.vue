@@ -1,30 +1,48 @@
 <template>
   <div class="step3">
     <div v-if="createSuccess">
-      <a-result status="success" title="操作成功" sub-title="容器部署中...">
+      <a-result
+        status="success"
+        :title="t('common.successText')"
+        :sub-title="t('container.create.successSubTitle')"
+      >
         <template #extra>
-          <a-button type="primary" @click="redo"> 再部署一個容器 </a-button>
-          <!-- <a-button type="primary" @click="openInfoDrawer(true)"> 查看詳情 </a-button>
-          <InfoDrawer :podName="name" @register="registerInfo" /> -->
+          <a-button type="primary" @click="redo">
+            {{ t('container.create.successRedoBtn') }}
+          </a-button>
         </template>
       </a-result>
       <div class="desc-wrap">
         <a-descriptions :column="1" class="mt-5">
-          <a-descriptions-item label="名稱"> {{ name }} </a-descriptions-item>
-          <a-descriptions-item label="映像檔"> {{ image }} </a-descriptions-item>
-          <a-descriptions-item label="通訊埠"> {{ port }} </a-descriptions-item>
+          <a-descriptions-item :label="t('container.create.name')">
+            {{ name }}
+          </a-descriptions-item>
+          <a-descriptions-item :label="t('container.create.image')">
+            {{ image }}
+          </a-descriptions-item>
+          <a-descriptions-item :label="t('container.create.port')">
+            {{ port }}
+          </a-descriptions-item>
         </a-descriptions>
       </div>
     </div>
     <div v-else>
-      <a-result status="error" title="部署失敗" sub-title="請確認以下訊息後，再重新部署。">
+      <a-result
+        status="error"
+        :title="t('common.failText')"
+        :sub-title="t('container.create.failSubTitle')"
+      >
         <template #extra>
-          <a-button key="console" type="primary" @click="redo"> 返回修改 </a-button>
+          <a-button key="console" type="primary" @click="redo">
+            {{ t('container.create.failRedoBtn') }}
+          </a-button>
         </template>
       </a-result>
       <div class="desc-wrap">
         <a-descriptions :column="1" class="mt-5">
-          <a-descriptions-item label="錯誤訊息"> {{ errorMsg }} </a-descriptions-item>
+          <a-descriptions-item :label="t('container.create.failMessageText')">
+            {{ errorMsg }}
+          </a-descriptions-item>
         </a-descriptions>
       </div>
     </div>
@@ -33,10 +51,12 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Result, Descriptions } from 'ant-design-vue';
-
   import { useDrawer } from '/@/components/Drawer';
 
   import { propTypes } from '/@/utils/propTypes';
+
+  import { useI18n } from '/@/hooks/web/useI18n';
+
   export default defineComponent({
     components: {
       [Result.name]: Result,
@@ -52,9 +72,11 @@
     },
     emits: ['redo'],
     setup(_, { emit }) {
+      const { t } = useI18n();
       const [registerInfo, { openDrawer: openInfoDrawer }] = useDrawer();
 
       return {
+        t,
         registerInfo,
         openInfoDrawer,
         redo: () => {

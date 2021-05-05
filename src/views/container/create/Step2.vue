@@ -1,6 +1,6 @@
 <template>
   <div class="step2">
-    <a-alert message="環境變數無法在執行階段修改，需要刪除後重新部署容器，請謹慎使用。" show-icon />
+    <a-alert :message="t('container.create.envAlertMessage')" show-icon />
     <a-divider />
     <BasicForm @register="registerEnv">
       <template #add="{ field }">
@@ -19,6 +19,8 @@
 
   import { EnvVar } from '/@/api/model/resources/resourcesModel';
 
+  import { useI18n } from '/@/hooks/web/useI18n';
+
   export default defineComponent({
     components: {
       BasicForm,
@@ -30,6 +32,7 @@
     },
     emits: ['next', 'prev'],
     setup(_, { emit }) {
+      const { t } = useI18n();
       const [
         registerEnv,
         { appendSchemaByField, removeSchemaByFiled, validate: validateEnvForm, setProps },
@@ -40,10 +43,10 @@
           span: 14,
         },
         resetButtonOptions: {
-          text: '上一步',
+          text: t('common.prevText'),
         },
         submitButtonOptions: {
-          text: '部署',
+          text: t('container.create.deployBtn'),
         },
         resetFunc: customResetFunc,
         submitFunc: customSubmitFunc,
@@ -74,7 +77,9 @@
               span: 10,
             },
             dynamicRules: ({ values }) => {
-              return values[`key${native_n}`] ? [{ required: true, message: '必填' }] : [];
+              return values[`key${native_n}`]
+                ? [{ required: true, message: t('common.requiredText') }]
+                : [];
             },
             dynamicDisabled: ({ values }) => {
               return !values[`key${native_n}`];
@@ -135,7 +140,7 @@
         } catch (error) {}
       }
 
-      return { registerEnv, add, del };
+      return { t, registerEnv, add, del };
     },
   });
 </script>

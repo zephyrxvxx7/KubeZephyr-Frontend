@@ -1,7 +1,5 @@
 <template>
-  <div v-show="opened">
-    <div ref="refTerminal"></div>
-  </div>
+  <div ref="refTerminal"></div>
 </template>
 <script lang="ts">
   import { defineComponent, markRaw, onBeforeUnmount, onMounted, ref } from 'vue';
@@ -21,7 +19,6 @@
     components: {},
     props: {
       podName: propTypes.string,
-      opened: propTypes.bool,
     },
     setup(props) {
       const globSetting = useGlobSetting();

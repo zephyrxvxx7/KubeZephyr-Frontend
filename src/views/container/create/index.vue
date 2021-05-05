@@ -1,10 +1,10 @@
 <template>
-  <PageWrapper title="Create a container" contentBackground content="" contentClass="p-4">
+  <PageWrapper :title="t('container.create.title')" contentBackground content="" contentClass="p-4">
     <div class="step-form-form">
-      <a-steps :current="current">
-        <a-step title="容器設定" />
-        <a-step title="環境設定" />
-        <a-step title="結果" />
+      <a-steps :current="current" type="navigation">
+        <a-step :title="t('container.create.step1')" />
+        <a-step :title="t('container.create.step2')" />
+        <a-step :title="t('container.create.step3')" />
       </a-steps>
     </div>
     <div class="mt-5">
@@ -41,6 +41,8 @@
   import Step2 from './Step2.vue';
   import Step3 from './Step3.vue';
 
+  import { useI18n } from '/@/hooks/web/useI18n';
+
   export default defineComponent({
     name: 'ContainerCreate',
     components: {
@@ -52,6 +54,8 @@
       [Steps.Step.name]: Steps.Step,
     },
     setup() {
+      const { t } = useI18n();
+
       const current = ref(0);
 
       const state = reactive({
@@ -116,6 +120,7 @@
       }
 
       return {
+        t,
         pod,
         current,
         handleStep1Next,

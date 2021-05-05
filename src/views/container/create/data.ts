@@ -1,39 +1,41 @@
 import { FormSchema } from '/@/components/Form';
 import { useResourceStore } from '/@/store/modules/resource';
+import { useI18n } from '/@/hooks/web/useI18n';
+const { t } = useI18n();
 
 export const step1Schemas: FormSchema[] = [
   {
     field: 'name',
     component: 'Input',
-    label: '名稱',
+    label: t('container.create.name'),
     required: true,
     defaultValue: 'kubezephyr_backend',
   },
   {
     field: 'image',
     component: 'Input',
-    label: '映像檔',
+    label: t('container.create.image'),
     required: true,
     defaultValue: 'zephyrxvxx7/kubezephyr_backend',
   },
   {
     field: 'port',
     component: 'InputNumber',
-    label: '通訊埠',
+    label: t('container.create.port'),
     required: true,
     defaultValue: 80,
   },
   {
     field: 'limit_cpu',
     component: 'InputNumber',
-    label: '處理器資源上限',
+    label: t('container.create.cpuLimits'),
     defaultValue: 0.5,
     suffix: 'core',
   },
   {
     field: 'limit_memory',
     component: 'InputNumber',
-    label: '記憶體資源上限',
+    label: t('container.create.memoryLimits'),
     defaultValue: 256,
     suffix: 'Mi',
   },
@@ -43,7 +45,7 @@ export const step1PvcSchemas: FormSchema[] = [
   {
     field: 'pvc0',
     component: 'ApiSelect',
-    label: 'Volume',
+    label: t('container.create.volume'),
     colProps: {
       span: 8,
     },
@@ -54,12 +56,12 @@ export const step1PvcSchemas: FormSchema[] = [
   {
     field: 'mount0',
     component: 'Input',
-    label: 'Mount Path',
+    label: t('container.create.volumeMountPath'),
     colProps: {
       span: 12,
     },
     dynamicRules: ({ values }) => {
-      return values.pvc0 ? [{ required: true, message: '必填' }] : [];
+      return values.pvc0 ? [{ required: true, message: t('common.requiredText') }] : [];
     },
     dynamicDisabled: ({ values }) => {
       return !values.pvc0;
@@ -93,7 +95,7 @@ export const step2EnvSchemas: FormSchema[] = [
       span: 10,
     },
     dynamicRules: ({ values }) => {
-      return values.key0 ? [{ required: true, message: '必填' }] : [];
+      return values.key0 ? [{ required: true, message: t('common.requiredText') }] : [];
     },
     dynamicDisabled: ({ values }) => {
       return !values.key0;

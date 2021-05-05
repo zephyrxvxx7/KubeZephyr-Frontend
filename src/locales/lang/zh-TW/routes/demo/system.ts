@@ -7,6 +7,6 @@ export default {
 
   dept: '部門管理',
 
-  menu: '功能列管理',
+  menu: '側邊欄管理',
   role: '角色權限管理',
 };

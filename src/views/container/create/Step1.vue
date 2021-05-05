@@ -5,10 +5,7 @@
 
       <div v-if="resourceStore.getPvcList.length > 0">
         <a-divider />
-        <a-alert
-          message="掛載的Volume無法在執行階段修改，需要刪除後重新部署容器，請謹慎使用。"
-          show-icon
-        />
+        <a-alert :message="t('container.create.volumeAlertMessage')" show-icon />
 
         <BasicForm @register="registerPvc">
           <template #add="{ field }">
@@ -19,7 +16,7 @@
       </div>
 
       <div align="center">
-        <a-button type="primary" @click="customSubmitFunc"> 下一步 </a-button>
+        <a-button type="primary" @click="customSubmitFunc"> {{ t('common.nextText') }} </a-button>
       </div>
     </div>
 
@@ -47,6 +44,8 @@
 
   import { useResourceStore } from '/@/store/modules/resource';
 
+  import { useI18n } from '/@/hooks/web/useI18n';
+
   const resourceStore = useResourceStore();
 
   export default defineComponent({
@@ -58,6 +57,8 @@
     },
     emits: ['next'],
     setup(_, { emit }) {
+      const { t } = useI18n();
+
       const [register, { validate }] = useForm({
         labelWidth: 120,
         schemas: step1Schemas,
@@ -71,14 +72,6 @@
         labelWidth: 100,
         schemas: step1PvcSchemas,
         showActionButtonGroup: false,
-        // actionColOptions: {
-        //   span: 14,
-        // },
-        // showResetButton: false,
-        // submitButtonOptions: {
-        //   text: '下一步',
-        // },
-        // submitFunc: customSubmitFunc,
       });
 
       const n = ref(1);
@@ -110,7 +103,9 @@
                 span: 12,
               },
               dynamicRules: ({ values }) => {
-                return values[`pvc${native_n}`] ? [{ required: true, message: '必填' }] : [];
+                return values[`pvc${native_n}`]
+                  ? [{ required: true, message: t('common.requiredText') }]
+                  : [];
               },
               dynamicDisabled: ({ values }) => {
                 return !values[`pvc${native_n}`];
@@ -166,7 +161,7 @@
         } catch (error) {}
       }
 
-      return { registerPvc, register, customSubmitFunc, add, del, resourceStore, n };
+      return { t, registerPvc, register, customSubmitFunc, add, del, resourceStore, n };
     },
   });
 </script>

@@ -8,6 +8,13 @@ export default {
   resetText: '重置',
   searchText: '搜尋',
   queryText: '輸入',
+  requiredText: '必填',
+
+  prevText: '上一步',
+  nextText: '下一步',
+
+  successText: '成功',
+  failText: '失敗',
 
   inputText: '請輸入',
   chooseText: '請選擇',
