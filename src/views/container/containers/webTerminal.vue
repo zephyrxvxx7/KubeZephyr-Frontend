@@ -14,6 +14,8 @@
   import { useUserStore } from '/@/store/modules/user';
   import { propTypes } from '/@/utils/propTypes';
 
+  import { debounce } from 'lodash-es';
+
   export default defineComponent({
     name: 'Terminal',
     components: {},
@@ -26,9 +28,9 @@
 
       const terminalOptions: ITerminalOptions = {
         cursorBlink: true,
-        cursorStyle: 'bar',
+        cursorStyle: 'underline',
         cursorWidth: 4,
-        fontSize: 14,
+        fontSize: 16,
         theme: {
           foreground: '#dcdfe4',
           background: '#282c34',
@@ -56,26 +58,32 @@
       const xtermFitAddon = new FitAddon();
       xterm.loadAddon(xtermFitAddon);
 
+      let terminalSocket: Nullable<WebSocket> = null;
       const refTerminal = ref<HTMLElement>();
 
-      const xtermFit = () => xtermFitAddon.fit();
+      function resizeScreen() {
+        if (refTerminal.value) refTerminal.value.style.height = `${window.innerHeight - 50}px`;
+
+        xtermFitAddon.fit();
+
+        if (terminalSocket !== null) terminalSocket.send(JSON.stringify([xterm.rows, xterm.cols]));
+      }
 
       onMounted(() => {
-        xterm.open(refTerminal.value as HTMLElement);
-
-        window.addEventListener('resize', xtermFit);
-
-        const terminalSocket = new WebSocket(
+        terminalSocket = new WebSocket(
           `${globSetting.wsUrl}/resources/pod/${userStore.getUserInfo.userId}/${props.podName}/exec`
         );
-        // const terminalSocket = new WebSocket(`ws://0.0.0.0:9487/api/resources/pod/${userStore.getUserInfo.userId}/${props.podName}/exec`)
-        const xtermAttachAddon = new AttachAddon(terminalSocket);
-        xterm.loadAddon(xtermAttachAddon);
+        xterm.loadAddon(new AttachAddon(terminalSocket));
+        xterm.open(refTerminal.value as HTMLElement);
         xterm.focus();
+
+        setTimeout(resizeScreen, 1000);
+        window.addEventListener('resize', debounce(resizeScreen, 500));
       });
 
       onBeforeUnmount(() => {
         xterm.dispose();
+        window.removeEventListener('resize', debounce(resizeScreen, 500));
       });
 
       return {
