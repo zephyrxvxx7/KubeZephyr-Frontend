@@ -51,10 +51,8 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Result, Descriptions } from 'ant-design-vue';
-  import { useDrawer } from '/@/components/Drawer';
 
   import { propTypes } from '/@/utils/propTypes';
-
   import { useI18n } from '/@/hooks/web/useI18n';
 
   export default defineComponent({
@@ -73,12 +71,9 @@
     emits: ['redo'],
     setup(_, { emit }) {
       const { t } = useI18n();
-      const [registerInfo, { openDrawer: openInfoDrawer }] = useDrawer();
 
       return {
         t,
-        registerInfo,
-        openInfoDrawer,
         redo: () => {
           emit('redo');
         },

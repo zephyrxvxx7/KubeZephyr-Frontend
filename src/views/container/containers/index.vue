@@ -1,9 +1,9 @@
 <template>
   <div>
-    <a-button color="success" class="my-4" @click="openInfoDrawer(true)">
+    <a-button color="success" class="mr-2" @click="openInfoDrawer(true)">
       {{ t('container.containers.descBtn') }}
     </a-button>
-    <a-button color="error" class="my-4" @click="handleDeletePod" :loading="loading">
+    <a-button color="error" class="mr-2" @click="handleDeletePod" :loading="loading">
       {{ t('container.containers.deleteBtn') }}
     </a-button>
     <InfoDrawer :podName="podName" @register="registerInfo" />

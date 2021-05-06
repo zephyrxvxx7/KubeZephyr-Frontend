@@ -1,7 +1,25 @@
 <template>
   <div class="step1">
     <div class="step1-form">
-      <BasicForm @register="register" />
+      <BasicForm @register="register">
+        <template #image="{ model }">
+          <a-select
+            show-search
+            v-model:value="model['image']"
+            :placeholder="t('common.inputText')"
+            :filter-option="false"
+            :not-found-content="apiState.fetching ? undefined : null"
+            @search="fetchDockerHub"
+          >
+            <template v-if="apiState.fetching" #notFoundContent>
+              <a-spin size="small" />
+            </template>
+            <a-select-option v-for="d in apiState.data" :key="d.value">
+              {{ d.text }}
+            </a-select-option>
+          </a-select>
+        </template>
+      </BasicForm>
 
       <div v-if="resourceStore.getPvcList.length > 0">
         <a-divider />
@@ -23,27 +41,25 @@
     <a-divider />
 
     <div>
-      <h3>說明</h3>
-      <h4>新增一個容器</h4>
-      <p
-        >需要指定使用者底下尚未有重複的名稱，要使用哪個映像檔（需要公開在docker
-        hub），以及指定要開啟哪個通訊埠供服務使用。</p
-      >
-      <p>（可選的）可以指定是否要限制此容器的使用資源上限，如不指定則將與其他容器共享資源配額。</p>
-      <p v-if="resourceStore.getPvcList.length > 0"
-        >（可選的）使用Volume掛載指定的Volume目錄到容器的指定目錄。</p
-      >
+      <h3> {{ t('container.create.descTitle') }} </h3>
+      <span style="white-space: pre-line">
+        {{ t('container.create.descMetaText') }}
+      </span>
+      <span v-if="resourceStore.getPvcList.length > 0">
+        {{ t('container.create.descVolumeText') }}
+      </span>
     </div>
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, unref, toRaw } from 'vue';
+  import { defineComponent, ref, reactive, unref, toRaw, watch } from 'vue';
+  import { Alert, Input, Divider, Select, Spin } from 'ant-design-vue';
+  import { debounce } from 'lodash-es';
+
   import { BasicForm, useForm } from '/@/components/Form';
   import { step1Schemas, step1PvcSchemas } from './data';
-  import { Alert, Input, Divider } from 'ant-design-vue';
 
   import { useResourceStore } from '/@/store/modules/resource';
-
   import { useI18n } from '/@/hooks/web/useI18n';
 
   const resourceStore = useResourceStore();
@@ -54,6 +70,9 @@
       [Alert.name]: Alert,
       [Input.name]: Input,
       [Divider.name]: Divider,
+      [Select.name]: Select,
+      ASelectOption: Select.Option,
+      [Spin.name]: Spin,
     },
     emits: ['next'],
     setup(_, { emit }) {
@@ -74,6 +93,72 @@
         showActionButtonGroup: false,
       });
 
+      // apiSearch
+      interface apiState {
+        data: Array<{ text: string; value: string }>;
+        value: string;
+        fetching: boolean;
+      }
+
+      let lastFetchId = 0;
+
+      const apiState: apiState = reactive({
+        data: [],
+        value: '',
+        fetching: false,
+      });
+
+      const fetchDockerHub = debounce((value) => {
+        lastFetchId += 1;
+        const fetchId = lastFetchId;
+        apiState.data = [];
+        apiState.fetching = true;
+        fetch(
+          `https://hub.docker.com/api/content/v1/products/search?page_size=10&page=1&q=${value}`
+        )
+          .then((response) => response.json())
+          .then((body) => {
+            if (fetchId !== lastFetchId) {
+              // for fetch callback order
+              return;
+            }
+            if (body.summaries) {
+              const data = body.summaries.map((image) => ({
+                text: image.name,
+                value: image.name,
+              }));
+              apiState.data.push(...data);
+            }
+          });
+        fetch(
+          `https://hub.docker.com/api/content/v1/products/search?page=1&page_size=10&source=community&q=${value}`
+        )
+          .then((response) => response.json())
+          .then((body) => {
+            if (fetchId !== lastFetchId) {
+              // for fetch callback order
+              return;
+            }
+            if (body.summaries) {
+              const data = body.summaries.map((image) => ({
+                text: image.name,
+                value: image.name,
+              }));
+              apiState.data.push(...data);
+              apiState.fetching = false;
+            }
+          });
+      }, 500);
+
+      watch(
+        () => apiState.value,
+        () => {
+          apiState.data = [];
+          apiState.fetching = false;
+        }
+      );
+
+      // DynamicVolume
       const n = ref(1);
 
       function add() {
@@ -161,7 +246,21 @@
         } catch (error) {}
       }
 
-      return { t, registerPvc, register, customSubmitFunc, add, del, resourceStore, n };
+      return {
+        t,
+        // apiSearch
+        apiState,
+        fetchDockerHub,
+
+        registerPvc,
+        register,
+        customSubmitFunc,
+        // DynamicVolume
+        add,
+        del,
+        n,
+        resourceStore,
+      };
     },
   });
 </script>

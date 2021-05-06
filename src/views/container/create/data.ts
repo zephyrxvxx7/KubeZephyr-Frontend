@@ -8,8 +8,26 @@ export const step1Schemas: FormSchema[] = [
     field: 'name',
     component: 'Input',
     label: t('container.create.name'),
-    required: true,
-    defaultValue: 'kubezephyr_backend',
+    defaultValue: 'kubezephyr-backend',
+    rules: [
+      {
+        required: true,
+        validator: async (_rule, value) => {
+          const reg = new RegExp(
+            `^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$`
+          );
+          if (value === '') return Promise.reject(t('common.requiredText'));
+
+          if (useResourceStore().getPodList.includes(value))
+            return Promise.reject(t('container.create.nameRuleMessage'));
+
+          if (!reg.test(value)) return Promise.reject(t('container.create.nameRegexMessage'));
+
+          return Promise.resolve();
+        },
+        trigger: 'change',
+      },
+    ],
   },
   {
     field: 'image',
@@ -17,6 +35,7 @@ export const step1Schemas: FormSchema[] = [
     label: t('container.create.image'),
     required: true,
     defaultValue: 'zephyrxvxx7/kubezephyr_backend',
+    slot: 'image',
   },
   {
     field: 'port',
@@ -28,16 +47,23 @@ export const step1Schemas: FormSchema[] = [
   {
     field: 'limit_cpu',
     component: 'InputNumber',
-    label: t('container.create.cpuLimits'),
+    label: t('container.create.cpuLimit'),
     defaultValue: 0.5,
     suffix: 'core',
+    componentProps: {
+      min: 0.1,
+      step: 0.1,
+    },
   },
   {
     field: 'limit_memory',
     component: 'InputNumber',
-    label: t('container.create.memoryLimits'),
+    label: t('container.create.memoryLimit'),
     defaultValue: 256,
     suffix: 'Mi',
+    componentProps: {
+      min: 1,
+    },
   },
 ];
 
