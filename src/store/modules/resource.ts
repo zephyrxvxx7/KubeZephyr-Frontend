@@ -75,9 +75,7 @@ export const useResourceStore = defineStore({
         const { mode } = params;
         const data = await getPodsNameAPI(mode);
 
-        const podList = data.pod;
-
-        this.setPodList(podList);
+        this.setPodList(data.pod);
 
         return data;
       } catch (error) {
