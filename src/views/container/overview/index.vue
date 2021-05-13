@@ -20,7 +20,7 @@
       const { getDarkMode } = useRootSetting();
 
       const frameSrc = computed(() => {
-        return `https://grafana.zephyr-kubernetes.tech/d/85a562078cdf77779eaa1add43ccec1e/kubernetes-compute-resources-namespace-pods?orgId=1&refresh=10s&var-datasource=Prometheus&var-cluster=&var-namespace=${getUserInfo.userId}&kiosk&theme=${getDarkMode.value}`;
+        return `https://grafana.zephyr-kubernetes.tech/d/resource_pods/compute-resources-namespace-pods?orgId=1&refresh=10s&var-datasource=Prometheus&var-cluster=&var-namespace=${getUserInfo.userId}&kiosk&theme=${getDarkMode.value}`;
       });
 
       return {
