@@ -1,5 +1,5 @@
 export default {
-  volume: '卷',
+  volume: '卷宗',
   overview: '總覽',
   create: '新增',
 };

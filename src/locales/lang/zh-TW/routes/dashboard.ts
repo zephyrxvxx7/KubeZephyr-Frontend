@@ -1,5 +1,5 @@
 export default {
-  dashboard: '儀表板',
+  dashboard: '監控中心',
   welcome: '首頁',
   workbench: '工作台',
   analysis: '分析頁',
