@@ -60,9 +60,55 @@ export const step1Schemas: FormSchema[] = [
     component: 'InputNumber',
     label: t('container.create.memoryLimit'),
     defaultValue: 256,
-    suffix: 'Mi',
+    colProps: {
+      span: 8,
+    },
     componentProps: {
       min: 1,
+    },
+  },
+  {
+    field: 'si',
+    component: 'Select',
+    label: '',
+    required: true,
+    colProps: {
+      span: 8,
+    },
+    defaultValue: 'Mi',
+    componentProps: {
+      options: [
+        {
+          label: 'Ki',
+          value: 'Ki',
+          key: 'Ki',
+        },
+        {
+          label: 'Mi',
+          value: 'Mi',
+          key: 'Mi',
+        },
+        {
+          label: 'Gi',
+          value: 'Gi',
+          key: 'Gi',
+        },
+        {
+          label: 'Ti',
+          value: 'Ti',
+          key: 'Ti',
+        },
+        {
+          label: 'Pi',
+          value: 'Pi',
+          key: 'Pi',
+        },
+        {
+          label: 'Ei',
+          value: 'Ei',
+          key: 'Ei',
+        },
+      ],
     },
   },
 ];

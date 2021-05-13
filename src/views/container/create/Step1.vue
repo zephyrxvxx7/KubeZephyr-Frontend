@@ -224,7 +224,7 @@
 
           if (values['limit_cpu']) values.limit_cpu = `${values.limit_cpu}`;
 
-          if (values['limit_memory']) values.limit_memory = `${values.limit_memory}Mi`;
+          if (values['limit_memory']) values.limit_memory = `${values.limit_memory}${values.si}`;
 
           let pvcResult: Array<{ pvc: string; mountPath: string }> | undefined = undefined;
           if (resourceStore.getPvcList.length > 0) {

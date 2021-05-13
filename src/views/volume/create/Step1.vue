@@ -37,7 +37,7 @@
         labelWidth: 150,
         schemas: step1Schemas,
         actionColOptions: {
-          span: 14,
+          span: 13,
         },
         showResetButton: false,
         submitButtonOptions: {

@@ -63,7 +63,7 @@
             accessModes: [pvc.accessModes],
             resources: {
               requests: {
-                storage: `${pvc.storage}Gi`,
+                storage: `${pvc.storage}${pvc.si}`,
               },
             },
             storageClassName: String(getUserInfo.userId),

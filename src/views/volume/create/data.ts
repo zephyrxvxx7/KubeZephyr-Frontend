@@ -8,6 +8,9 @@ export const step1Schemas: FormSchema[] = [
     field: 'name',
     component: 'Input',
     label: t('volume.create.name'),
+    colProps: {
+      span: 20,
+    },
     defaultValue: 'my-volume',
     rules: [
       {
@@ -34,6 +37,9 @@ export const step1Schemas: FormSchema[] = [
     component: 'Select',
     label: t('volume.create.accessModes'),
     required: true,
+    colProps: {
+      span: 20,
+    },
     defaultValue: 'ReadWriteOnce',
     componentProps: {
       options: [
@@ -51,10 +57,56 @@ export const step1Schemas: FormSchema[] = [
     label: t('volume.create.storage'),
     required: true,
     defaultValue: 1,
-    suffix: 'Gi',
+    colProps: {
+      span: 9,
+    },
     componentProps: {
       min: 0.1,
       step: 0.1,
+    },
+  },
+  {
+    field: 'si',
+    component: 'Select',
+    label: '',
+    required: true,
+    colProps: {
+      span: 8,
+    },
+    defaultValue: 'Gi',
+    componentProps: {
+      options: [
+        {
+          label: 'Ki',
+          value: 'Ki',
+          key: 'Ki',
+        },
+        {
+          label: 'Mi',
+          value: 'Mi',
+          key: 'Mi',
+        },
+        {
+          label: 'Gi',
+          value: 'Gi',
+          key: 'Gi',
+        },
+        {
+          label: 'Ti',
+          value: 'Ti',
+          key: 'Ti',
+        },
+        {
+          label: 'Pi',
+          value: 'Pi',
+          key: 'Pi',
+        },
+        {
+          label: 'Ei',
+          value: 'Ei',
+          key: 'Ei',
+        },
+      ],
     },
   },
 ];
