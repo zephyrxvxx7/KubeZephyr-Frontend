@@ -32,7 +32,7 @@ export interface ErrorLogInfo {
 export interface UserInfo {
   userId: string | number;
   email: string;
-  realName?: string;
+  realName: string;
   desc?: string;
 }
 

@@ -5,4 +5,5 @@ export default {
   containers: '已部署的容器',
   dashboard: '概況',
   terminal: '終端機',
+  bindDomain: '綁定網域',
 };

@@ -143,6 +143,8 @@ export interface GlobConfig {
   urlPrefix?: string;
   // Web socket interface url
   wsUrl: string;
+  // Domain for Ingress
+  domain: string;
   // Project abbreviation
   shortName: string;
 }
@@ -155,6 +157,8 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL_PREFIX?: string;
   // Web socket interface url
   VITE_GLOB_WS_URL: string;
+  // Domain for Ingress
+  VITE_GLOB_DOMAIN: string;
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string;
   // Upload url

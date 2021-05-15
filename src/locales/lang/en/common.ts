@@ -16,6 +16,9 @@ export default {
   successText: 'Success',
   failText: 'Failure',
 
+  yes: 'Yes',
+  no: 'No',
+
   inputText: 'Please enter ',
   chooseText: 'Please choose ',
 

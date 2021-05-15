@@ -1268,6 +1268,44 @@ export interface HTTPHeader {
 /**
  *
  * @export
+ * @interface HTTPIngressPath
+ */
+export interface HTTPIngressPath {
+  /**
+   * Backend defines the referenced service endpoint to which the traffic will be forwarded to.
+   * @type {IngressBackend}
+   * @memberof HTTPIngressPath
+   */
+  backend: IngressBackend;
+  /**
+   * Path is matched against the path of an incoming request. Currently it can contain characters disallowed from the conventional \"path\" part of a URL as defined by RFC 3986. Paths must begin with a \'/\'. When unspecified, all paths from incoming requests are matched.
+   * @type {string}
+   * @memberof HTTPIngressPath
+   */
+  path?: string;
+  /**
+   * PathType determines the interpretation of the Path matching. PathType can be one of the following values: * Exact: Matches the URL path exactly. * Prefix: Matches based on a URL path prefix split by \'/\'. Matching is   done on a path element by element basis. A path element refers is the   list of labels in the path split by the \'/\' separator. A request is a   match for path p if every p is an element-wise prefix of p of the   request path. Note that if the last element of the path is a substring   of the last element in request path, it is not a match (e.g. /foo/bar   matches /foo/bar/baz, but does not match /foo/barbaz). * ImplementationSpecific: Interpretation of the Path matching is up to   the IngressClass. Implementations can treat this as a separate PathType   or treat it identically to Prefix or Exact path types. Implementations are required to support all path types. Defaults to ImplementationSpecific.
+   * @type {string}
+   * @memberof HTTPIngressPath
+   */
+  pathType?: string;
+}
+/**
+ *
+ * @export
+ * @interface HTTPIngressRuleValue
+ */
+export interface HTTPIngressRuleValue {
+  /**
+   * A collection of paths that map requests to backends.
+   * @type {Array<HTTPIngressPath>}
+   * @memberof HTTPIngressRuleValue
+   */
+  paths: Array<HTTPIngressPath>;
+}
+/**
+ *
+ * @export
  * @interface HTTPValidationError
  */
 export interface HTTPValidationError {
@@ -1417,6 +1455,150 @@ export interface ISCSIVolumeSource {
 /**
  *
  * @export
+ * @interface Ingress
+ */
+export interface Ingress {
+  /**
+   * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+   * @type {string}
+   * @memberof Ingress
+   */
+  apiVersion?: string;
+  /**
+   * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+   * @type {string}
+   * @memberof Ingress
+   */
+  kind?: string;
+  /**
+   * Standard object\'s metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+   * @type {ObjectMeta}
+   * @memberof Ingress
+   */
+  metadata?: ObjectMeta;
+  /**
+   * Spec is the desired state of the Ingress. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+   * @type {IngressSpec}
+   * @memberof Ingress
+   */
+  spec?: IngressSpec;
+  /**
+   * Status is the current state of the Ingress. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+   * @type {IngressStatus}
+   * @memberof Ingress
+   */
+  status?: IngressStatus;
+}
+/**
+ *
+ * @export
+ * @interface IngressBackend
+ */
+export interface IngressBackend {
+  /**
+   * Resource is an ObjectRef to another Kubernetes resource in the namespace of the Ingress object. If resource is specified, serviceName and servicePort must not be specified.
+   * @type {TypedLocalObjectReference}
+   * @memberof IngressBackend
+   */
+  resource?: TypedLocalObjectReference;
+  /**
+   * Specifies the name of the referenced service.
+   * @type {string}
+   * @memberof IngressBackend
+   */
+  serviceName?: string;
+  /**
+   * Specifies the port of the referenced service.
+   * @type {string}
+   * @memberof IngressBackend
+   */
+  servicePort?: string;
+}
+/**
+ *
+ * @export
+ * @interface IngressRule
+ */
+export interface IngressRule {
+  /**
+   * Host is the fully qualified domain name of a network host, as defined by RFC 3986. Note the following deviations from the \"host\" part of the URI as defined in RFC 3986: 1. IPs are not allowed. Currently an IngressRuleValue can only apply to    the IP in the Spec of the parent Ingress. 2. The `:` delimiter is not respected because ports are not allowed.    Currently the port of an Ingress is implicitly :80 for http and    :443 for https. Both these may change in the future. Incoming requests are matched against the host before the IngressRuleValue. If the host is unspecified, the Ingress routes all traffic based on the specified IngressRuleValue.  Host can be \"precise\" which is a domain name without the terminating dot of a network host (e.g. \"foo.bar.com\") or \"wildcard\", which is a domain name prefixed with a single wildcard label (e.g. \"*.foo.com\"). The wildcard character \'*\' must appear by itself as the first DNS label and matches only a single label. You cannot have a wildcard label by itself (e.g. Host == \"*\"). Requests will be matched against the Host field in the following way: 1. If Host is precise, the request matches this rule if the http host header is equal to Host. 2. If Host is a wildcard, then the request matches this rule if the http host header is to equal to the suffix (removing the first label) of the wildcard rule.
+   * @type {string}
+   * @memberof IngressRule
+   */
+  host?: string;
+  /**
+   *
+   * @type {HTTPIngressRuleValue}
+   * @memberof IngressRule
+   */
+  http?: HTTPIngressRuleValue;
+}
+/**
+ *
+ * @export
+ * @interface IngressSpec
+ */
+export interface IngressSpec {
+  /**
+   * A default backend capable of servicing requests that don\'t match any rule. At least one of \'backend\' or \'rules\' must be specified. This field is optional to allow the loadbalancer controller or defaulting logic to specify a global default.
+   * @type {IngressBackend}
+   * @memberof IngressSpec
+   */
+  backend?: IngressBackend;
+  /**
+   * IngressClassName is the name of the IngressClass cluster resource. The associated IngressClass defines which controller will implement the resource. This replaces the deprecated `kubernetes.io/ingress.class` annotation. For backwards compatibility, when that annotation is set, it must be given precedence over this field. The controller may emit a warning if the field and annotation have different values. Implementations of this API should ignore Ingresses without a class specified. An IngressClass resource may be marked as default, which can be used to set a default value for this field. For more information, refer to the IngressClass documentation.
+   * @type {string}
+   * @memberof IngressSpec
+   */
+  ingressClassName?: string;
+  /**
+   * A list of host rules used to configure the Ingress. If unspecified, or no rule matches, all traffic is sent to the default backend.
+   * @type {Array<IngressRule>}
+   * @memberof IngressSpec
+   */
+  rules?: Array<IngressRule>;
+  /**
+   * TLS configuration. Currently the Ingress only supports a single TLS port, 443. If multiple members of this list specify different hosts, they will be multiplexed on the same port according to the hostname specified through the SNI TLS extension, if the ingress controller fulfilling the ingress supports SNI.
+   * @type {Array<IngressTLS>}
+   * @memberof IngressSpec
+   */
+  tls?: Array<IngressTLS>;
+}
+/**
+ *
+ * @export
+ * @interface IngressStatus
+ */
+export interface IngressStatus {
+  /**
+   * LoadBalancer contains the current status of the load-balancer.
+   * @type {LoadBalancerStatus}
+   * @memberof IngressStatus
+   */
+  loadBalancer?: LoadBalancerStatus;
+}
+/**
+ *
+ * @export
+ * @interface IngressTLS
+ */
+export interface IngressTLS {
+  /**
+   * Hosts are a list of hosts included in the TLS certificate. The values in this list must match the name/s used in the tlsSecret. Defaults to the wildcard host setting for the loadbalancer controller fulfilling this Ingress, if left unspecified.
+   * @type {Array<string>}
+   * @memberof IngressTLS
+   */
+  hosts?: Array<string>;
+  /**
+   * SecretName is the name of the secret used to terminate TLS traffic on port 443. Field is left optional to allow TLS routing based on SNI hostname alone. If the SNI host in a listener conflicts with the \"Host\" header field used by an IngressRule, the SNI host is used for termination and value of the Host header is used for routing.
+   * @type {string}
+   * @memberof IngressTLS
+   */
+  secretName?: string;
+}
+/**
+ *
+ * @export
  * @interface KeyToPath
  */
 export interface KeyToPath {
@@ -1505,6 +1687,38 @@ export interface Lifecycle {
 /**
  *
  * @export
+ * @interface LoadBalancerIngress
+ */
+export interface LoadBalancerIngress {
+  /**
+   * Hostname is set for load-balancer ingress points that are DNS based (typically AWS load-balancers)
+   * @type {string}
+   * @memberof LoadBalancerIngress
+   */
+  hostname?: string;
+  /**
+   * IP is set for load-balancer ingress points that are IP based (typically GCE or OpenStack load-balancers)
+   * @type {string}
+   * @memberof LoadBalancerIngress
+   */
+  ip?: string;
+}
+/**
+ *
+ * @export
+ * @interface LoadBalancerStatus
+ */
+export interface LoadBalancerStatus {
+  /**
+   * Ingress is a list containing ingress points for the load-balancer. Traffic intended for the service should be sent to these ingress points.
+   * @type {Array<LoadBalancerIngress>}
+   * @memberof LoadBalancerStatus
+   */
+  ingress?: Array<LoadBalancerIngress>;
+}
+/**
+ *
+ * @export
  * @interface LocalObjectReference
  */
 export interface LocalObjectReference {
@@ -1558,6 +1772,11 @@ export interface ManagedFieldsEntry {
    */
   time?: string;
 }
+/**
+ *
+ * @export
+ * @interface NFSVolumeSource
+ */
 export interface NFSVolumeSource {
   /**
    * Path that is exported by the NFS server. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
@@ -2569,6 +2788,11 @@ export interface Probe {
    */
   timeoutSeconds?: number;
 }
+/**
+ *
+ * @export
+ * @interface ProjectedVolumeSource
+ */
 export interface ProjectedVolumeSource {
   /**
    * Mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.
@@ -2583,6 +2807,11 @@ export interface ProjectedVolumeSource {
    */
   sources: Array<VolumeProjection>;
 }
+/**
+ *
+ * @export
+ * @interface QuobyteVolumeSource
+ */
 export interface QuobyteVolumeSource {
   /**
    * Group to map volume access to Default is no group
@@ -3378,6 +3607,11 @@ export interface TypedLocalObjectReference {
    */
   name: string;
 }
+/**
+ *
+ * @export
+ * @interface ValidationError
+ */
 export interface ValidationError {
   /**
    *

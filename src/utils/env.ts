@@ -28,6 +28,7 @@ export function getAppEnvConfig() {
     VITE_GLOB_APP_SHORT_NAME,
     VITE_GLOB_API_URL_PREFIX,
     VITE_GLOB_WS_URL,
+    VITE_GLOB_DOMAIN,
     VITE_GLOB_UPLOAD_URL,
   } = ENV;
 
@@ -43,6 +44,7 @@ export function getAppEnvConfig() {
     VITE_GLOB_APP_SHORT_NAME,
     VITE_GLOB_API_URL_PREFIX,
     VITE_GLOB_WS_URL,
+    VITE_GLOB_DOMAIN,
     VITE_GLOB_UPLOAD_URL,
   };
 }

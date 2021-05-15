@@ -44,7 +44,7 @@ export interface GetUserInfoByUserIdModel {
 
 export interface User {
   email: string;
-  realName?: string;
+  realName: string;
   desc?: string;
   roles: Array<UserRole>;
   token: string;
@@ -81,7 +81,7 @@ export interface UserRole {
 
 export interface ManyUser {
   email: string;
-  realName?: string;
+  realName: string;
   desc?: string;
   roles: Array<UserRole>;
   id: string;

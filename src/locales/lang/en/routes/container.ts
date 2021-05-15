@@ -5,4 +5,5 @@ export default {
   containers: 'Containers',
   dashboard: 'Dashboard',
   terminal: 'Terminal',
+  bindDomain: 'Bind domain',
 };

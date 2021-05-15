@@ -7,13 +7,14 @@ export default {
   // Step 1
   name: '名稱',
   nameRuleMessage: '不能新建相同名稱的容器',
-  nameRegexMessage: `必須由小寫字母、數字、'-'、'.'組成，並且必須以字母或數字為開頭和結尾 (RFC 1123)`,
+  nameLengthMessage: '不能超過63個字元',
+  nameRegexMessage: `必須由大小寫字母、數字、'-'組成，並且必須以字母或數字為開頭和結尾 (RFC 1123)`,
   image: '映像檔',
   port: '通訊埠',
   cpuLimit: '處理器資源上限',
   memoryLimit: '記憶體資源上限',
   descTitle: '說明',
-  descMetaText: `需要指定使用者底下尚未有重複的名稱，要使用哪個映像檔（需要公開在docker hub），以及指定要開啟哪個通訊埠供服務使用。\n（可選的）可以指定是否要限制此容器的使用資源上限，如不指定則將與其他容器共享資源配額。\n`,
+  descMetaText: `需要指定使用者底下尚未有重複的名稱，要使用哪個映像檔（需要公開在docker hub），以及指定要開啟哪個通訊埠供服務使用。\n指定的名稱會有DNS Record，同個使用者下的容器可以使用名稱互相溝通\n（可選的）可以指定是否要限制此容器的使用資源上限，如不指定則將與其他容器共享資源配額。\n`,
   descVolumeText: '（可選的）使用Volume掛載指定的Volume目錄到容器的指定目錄。',
 
   volumeAlertMessage: '掛載的Volume無法在執行階段修改，需要刪除後重新部署容器，請謹慎使用。',

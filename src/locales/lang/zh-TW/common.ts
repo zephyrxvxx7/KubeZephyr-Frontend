@@ -16,6 +16,9 @@ export default {
   successText: '成功',
   failText: '失敗',
 
+  yes: '是',
+  no: '否',
+
   inputText: '請輸入',
   chooseText: '請選擇',
 

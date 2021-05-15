@@ -6,15 +6,17 @@ import { store } from '/@/store';
 import { POD_LIST, PVC_LIST, INGRESS_LIST } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 
-import { ManyPodInResponse } from '/@/api/model/resources/podModel';
-import { ManyPvcInResponse } from '/@/api/model/resources/pvcModel';
+import type { ManyPodInResponse } from '/@/api/model/resources/podModel';
+import type { ManyPvcInResponse } from '/@/api/model/resources/pvcModel';
+import type { ManyIngress, ManyIngressInResponse } from '/@/api/model/resources/ingressModel';
 import { getPodsNameAPI } from '/@/api/pod';
 import { getPvcsNameAPI } from '/@/api/pvc';
+import { getIngressesAPI } from '/@/api/ingress';
 
 interface ResourceState {
   pods: Array<string>;
   pvcs: Array<string>;
-  ingresses: Array<string>;
+  ingresses: Array<ManyIngress>;
   isAddedNewResource: boolean;
 }
 
@@ -39,7 +41,9 @@ export const useResourceStore = defineStore({
       return this.pvcs.length > 0 ? this.pvcs : getAuthCache<Array<string>>(PVC_LIST);
     },
     getIngressList() {
-      return this.ingresses.length > 0 ? this.ingresses : getAuthCache<Array<string>>(INGRESS_LIST);
+      return this.ingresses.length > 0
+        ? this.ingresses
+        : getAuthCache<Array<ManyIngress>>(INGRESS_LIST);
     },
     getIsAddedNewResource() {
       return this.isAddedNewResource;
@@ -54,7 +58,7 @@ export const useResourceStore = defineStore({
       this.pvcs = pvcs;
       setAuthCache(PVC_LIST, pvcs);
     },
-    setIngressList(ingresses: Array<string>) {
+    setIngressList(ingresses: Array<ManyIngress>) {
       this.ingresses = ingresses;
       setAuthCache(INGRESS_LIST, ingresses);
     },
@@ -113,6 +117,23 @@ export const useResourceStore = defineStore({
       });
 
       return result;
+    },
+
+    async getIngressFromAPI(params: {
+      mode?: ErrorMessageMode;
+    }): Promise<ManyIngressInResponse | null> {
+      try {
+        const { mode } = params;
+        const data = await getIngressesAPI(mode);
+
+        const ingressList = data.ingress;
+
+        this.setIngressList(ingressList);
+
+        return data;
+      } catch (error) {
+        return null;
+      }
     },
   },
 });

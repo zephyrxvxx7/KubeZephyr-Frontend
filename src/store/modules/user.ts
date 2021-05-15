@@ -136,10 +136,11 @@ export const useUserStore = defineStore({
     },
 
     async resourceInit(params: { mode?: ErrorMessageMode }) {
-      const { getPodListFromAPI, getPvcListFromAPI } = useResourceStore();
+      const { getPodListFromAPI, getPvcListFromAPI, getIngressFromAPI } = useResourceStore();
 
       await getPodListFromAPI(params);
       await getPvcListFromAPI(params);
+      await getIngressFromAPI(params);
     },
 
     /**

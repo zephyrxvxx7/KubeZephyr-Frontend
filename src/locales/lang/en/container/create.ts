@@ -7,7 +7,8 @@ export default {
   // Step 1
   name: 'Name',
   nameRuleMessage: 'Name must be unique within a user',
-  nameRegexMessage: `Must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character (RFC 1123)`,
+  nameLengthMessage: 'Contain at most 63 characters',
+  nameRegexMessage: `Must consist of alphanumeric characters, '-', and must start and end with an alphanumeric character (RFC 1123)`,
   image: 'Image',
   port: 'Port',
   cpuLimit: 'Limit of CPU',
