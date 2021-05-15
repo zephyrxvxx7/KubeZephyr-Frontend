@@ -6,7 +6,8 @@ export default {
   // Step 1
   name: '名稱',
   nameRuleMessage: '不能新建相同名稱的卷宗',
-  nameRegexMessage: `必須由小寫字母、數字、'-'、'.'組成，並且必須以字母或數字為開頭和結尾 (RFC 1123)`,
+  nameLengthMessage: '不能超過63個字元',
+  nameRegexMessage: `必須由大小寫字母、數字、'-'組成，並且必須以字母或數字為開頭和結尾 (RFC 1123)`,
   accessModes: '存取模式',
   storage: '儲存空間',
 

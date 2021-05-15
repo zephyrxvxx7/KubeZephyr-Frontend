@@ -13,13 +13,13 @@ export const step1Schemas: FormSchema[] = [
       {
         required: true,
         validator: async (_rule, value) => {
-          const reg = new RegExp(
-            `^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$`
-          );
+          const reg = new RegExp(`^(?![0-9]+$)(?!.*-$)(?!-)[a-zA-Z0-9-]{1,63}$`);
           if (value === '') return Promise.reject(t('common.requiredText'));
 
           if (useResourceStore().getPodList.includes(value))
             return Promise.reject(t('container.create.nameRuleMessage'));
+
+          if (value.length > 63) return Promise.reject(t('container.create.nameLengthMessage'));
 
           if (!reg.test(value)) return Promise.reject(t('container.create.nameRegexMessage'));
 

@@ -71,9 +71,8 @@
         };
 
         createPvcApi(pvcParms, 'message')
-          .then((result) => {
+          .then((_result) => {
             const { getPvcListFromAPI, setIsAddedNewResource } = useResourceStore();
-            console.log(result);
             getPvcListFromAPI({});
             setIsAddedNewResource(true);
             createSuccess.value = true;

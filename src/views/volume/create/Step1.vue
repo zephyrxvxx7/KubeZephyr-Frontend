@@ -16,7 +16,7 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { Alert, Input } from 'ant-design-vue';
+  import { Alert, Divider, Input } from 'ant-design-vue';
 
   import { BasicForm, useForm } from '/@/components/Form';
   import { step1Schemas } from './data';
@@ -27,6 +27,7 @@
     components: {
       BasicForm,
       [Alert.name]: Alert,
+      [Divider.name]: Divider,
       [Input.name]: Input,
     },
     emits: ['next'],
