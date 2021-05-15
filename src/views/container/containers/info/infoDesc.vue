@@ -21,10 +21,17 @@
 
   <div v-if="statusIsReady">
     <Description
+      title="Status"
+      :collapseOptions="{ canExpand: true, helpMessage: '容器的狀態' }"
+      :column="1"
+      :data="podStatus"
+      :schema="statusSchema"
+    />
+    <Description
       title="IP"
-      :collapseOptions="{ canExpand: true, helpMessage: '容器的部署的主機IP及其叢集內部虛擬IP' }"
+      :collapseOptions="{ canExpand: true, helpMessage: '容器實際部署到的主機IP及其叢集內部IP' }"
       :column="2"
-      :data="podStatus.status"
+      :data="podStatus['status']"
       :schema="ipSchema"
     />
   </div>
@@ -36,6 +43,20 @@
       :column="2"
       :data="portInfo"
       :schema="portSchema"
+    />
+    <Description
+      title="Volumes"
+      :collapseOptions="{ canExpand: true, helpMessage: '容器掛載的卷宗' }"
+      :column="2"
+      :data="volumes"
+      :schema="volumeSchema"
+    />
+    <Description
+      title="Environments"
+      :collapseOptions="{ canExpand: true, helpMessage: '容器的環境變數' }"
+      :column="2"
+      :data="envs"
+      :schema="envSchema"
     />
   </div>
 
@@ -57,59 +78,10 @@
   import { propTypes } from '/@/utils/propTypes';
 
   import { getPodByNameAPI, getPodLogByNameAPI, getPodStatusByNameAPI } from '/@/api/pod';
-  import { PodInCreate, PodInResponseStatus } from '/@/api/model/resources/podModel';
-  // import { ContainerPort, Volume, VolumeMount } from '/@/api/model/resources/resourcesModel'
+  import { PodInCreate } from '/@/api/model/resources/podModel';
   import { ContainerPort } from '/@/api/model/resources/resourcesModel';
 
-  const metaSchema: DescItem[] = [
-    {
-      field: 'name',
-      label: '名稱',
-    },
-    {
-      field: 'creationTimestamp',
-      label: '創建時間',
-    },
-    {
-      field: 'selfLink',
-      label: 'selfLink',
-    },
-  ];
-
-  const imageSchema: DescItem[] = [
-    {
-      field: 'image',
-      label: '映像檔',
-    },
-    {
-      field: 'imagePullPolicy',
-      label: '映像檔拉取策略',
-    },
-  ];
-
-  const portSchema: DescItem[] = [
-    {
-      field: 'containerPort',
-      label: '通訊埠',
-    },
-    {
-      field: 'protocol',
-      label: '通訊協定',
-    },
-  ];
-
-  const ipSchema: DescItem[] = [
-    {
-      field: 'hostIP',
-      label: '主機IP位置',
-    },
-    {
-      field: 'podIP',
-      label: '容器IP位置',
-    },
-  ];
-
-  // const volumeSchema: DescItem[] = []
+  import { metaSchema, statusSchema, imageSchema, portSchema, ipSchema } from './data';
 
   export default defineComponent({
     components: {
@@ -127,11 +99,16 @@
       const statusIsReady = ref(false);
 
       const podInfo = reactive({ metadata: {}, spec: { containers: [] } } as PodInCreate);
+      const podStatus = reactive({});
       const portInfo = reactive({} as ContainerPort);
-      // const volumes = reactive({} as Volume & VolumeMount)
+
+      const volumeSchema = reactive([] as DescItem[]);
+      const volumes = reactive({});
+
+      const envSchema = reactive([] as DescItem[]);
+      const envs = reactive({});
 
       const logs = ref('');
-      const podStatus = reactive({} as PodInResponseStatus);
 
       onMounted(() => {
         getPodByNameAPI(props.podName, 'message')
@@ -139,23 +116,62 @@
             podInfo.metadata = pod.pod.metadata;
             podInfo.spec = pod.pod.spec;
 
-            if (podInfo.spec.containers[0].ports) {
-              portInfo.containerPort = podInfo.spec.containers[0].ports[0].containerPort;
-              portInfo.protocol = podInfo.spec.containers[0].ports[0].protocol;
-            }
+            portInfo.containerPort = podInfo.spec.containers![0].ports![0].containerPort;
+            portInfo.protocol = podInfo.spec.containers![0].ports![0].protocol;
 
-            if (podInfo.spec.volumes) {
-            }
+            let n = 0;
+            podInfo.spec.volumes?.forEach((value) => {
+              volumes[`pvc${n}`] = value.persistentVolumeClaim!.claimName;
+              volumeSchema.push(
+                {
+                  field: `pvc${n}`,
+                  label: '卷宗名稱',
+                },
+                {
+                  field: `mount${n}`,
+                  label: '掛載路徑',
+                }
+              );
+              n++;
+            });
+
+            podInfo.spec.containers![0].volumeMounts?.forEach((value) => {
+              volumes[`mount${value.name}`] = value.mountPath;
+            });
+
+            n = 0;
+            podInfo.spec.containers![0].env?.forEach((value) => {
+              envs[`name${n}`] = value.name;
+              envs[`value${n}`] = value.value;
+
+              envSchema.push(
+                {
+                  field: `name${n}`,
+                  label: 'Key',
+                },
+                {
+                  field: `value${n}`,
+                  label: 'Value',
+                }
+              );
+              n++;
+            });
+
             descIsReady.value = true;
           })
           .catch((_error) => {});
 
         getPodStatusByNameAPI(props.podName, 'message')
           .then((status) => {
-            podStatus.status = status.status;
+            podStatus['status'] = status.status;
+            podStatus['phase'] = status.status.phase;
+            podStatus['message'] =
+              status.status.containerStatuses![0].state!.waiting?.message ?? '';
             statusIsReady.value = true;
           })
-          .catch((_error) => {});
+          .catch((_error) => {
+            console.log(_error);
+          });
 
         getPodLogByNameAPI(props.podName)
           .then((log) => {
@@ -165,21 +181,24 @@
           .catch((_error) => {});
       });
 
-      // computed()
-
       return {
         descIsReady,
         statusIsReady,
         logIsReady,
 
         metaSchema,
+        statusSchema,
         imageSchema,
         portSchema,
         ipSchema,
+        volumeSchema,
+        envSchema,
 
         podInfo,
-        portInfo,
         podStatus,
+        portInfo,
+        volumes,
+        envs,
         logs,
       };
     },

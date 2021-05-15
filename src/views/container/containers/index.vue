@@ -24,7 +24,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useI18n } from '/@/hooks/web/useI18n';
 
-  import InfoDrawer from './infoDrawer.vue';
+  import InfoDrawer from './info/infoDrawer.vue';
   import { deletePodAPI } from '/@/api/pod';
 
   import { propTypes } from '/@/utils/propTypes';
