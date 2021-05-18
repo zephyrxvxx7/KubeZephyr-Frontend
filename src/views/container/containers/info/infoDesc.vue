@@ -1,5 +1,5 @@
 <template>
-  <div v-if="descIsReady">
+  <div v-if="isReady">
     <Description
       title="Metadata"
       :collapseOptions="{ canExpand: true, helpMessage: '容器的基本資訊' }"
@@ -8,24 +8,18 @@
       :schema="metaSchema"
     />
     <Description
-      title="Image"
-      :collapseOptions="{ canExpand: true, helpMessage: '容器使用的映像檔及其拉取策略' }"
-      :column="2"
-      :data="podInfo.spec.containers[0]"
-      :schema="imageSchema"
-    />
-  </div>
-  <div v-else>
-    <span> Loading... </span>
-  </div>
-
-  <div v-if="statusIsReady">
-    <Description
       title="Status"
       :collapseOptions="{ canExpand: true, helpMessage: '容器的狀態' }"
       :column="1"
       :data="podStatus"
       :schema="statusSchema"
+    />
+    <Description
+      title="Image"
+      :collapseOptions="{ canExpand: true, helpMessage: '容器使用的映像檔及其拉取策略' }"
+      :column="2"
+      :data="podInfo.spec.containers[0]"
+      :schema="imageSchema"
     />
     <Description
       title="IP"
@@ -34,9 +28,6 @@
       :data="podStatus['status']"
       :schema="ipSchema"
     />
-  </div>
-
-  <div v-if="descIsReady">
     <Description
       title="Port"
       :collapseOptions="{ canExpand: true, helpMessage: '容器開啟的通訊埠' }"
@@ -44,20 +35,27 @@
       :data="portInfo"
       :schema="portSchema"
     />
-    <Description
+    <BasicTable
       title="Volumes"
-      :collapseOptions="{ canExpand: true, helpMessage: '容器掛載的卷宗' }"
-      :column="2"
-      :data="volumes"
-      :schema="volumeSchema"
+      titleHelpMessage="容器掛載的卷宗"
+      :columns="volumeColumns"
+      :dataSource="volumes"
+      :striped="false"
+      :bordered="false"
+      :showIndexColumn="false"
     />
-    <Description
+    <BasicTable
       title="Environments"
-      :collapseOptions="{ canExpand: true, helpMessage: '容器的環境變數' }"
-      :column="2"
-      :data="envs"
-      :schema="envSchema"
+      titleHelpMessage="容器的環境變數"
+      :columns="envColumns"
+      :dataSource="envs"
+      :striped="false"
+      :bordered="false"
+      :showIndexColumn="false"
     />
+  </div>
+  <div v-else>
+    <span> Loading... </span>
   </div>
 
   <CollapseContainer class="w-full h-32 mt-5 bg-white rounded-md" title="logs">
@@ -72,7 +70,8 @@
 <script lang="ts">
   import { defineComponent, reactive, ref, onMounted } from 'vue';
   import { Descriptions } from 'ant-design-vue';
-  import { Description, DescItem } from '/@/components/Description';
+  import { BasicTable } from '/@/components/Table';
+  import { Description } from '/@/components/Description';
   import { CollapseContainer } from '/@/components/Container/index';
 
   import { propTypes } from '/@/utils/propTypes';
@@ -81,10 +80,19 @@
   import { PodInCreate } from '/@/api/model/resources/podModel';
   import { ContainerPort } from '/@/api/model/resources/resourcesModel';
 
-  import { metaSchema, statusSchema, imageSchema, portSchema, ipSchema } from './data';
+  import {
+    metaSchema,
+    statusSchema,
+    imageSchema,
+    portSchema,
+    ipSchema,
+    volumeColumns,
+    envColumns,
+  } from './data';
 
   export default defineComponent({
     components: {
+      BasicTable,
       Description,
       [Descriptions.name]: Descriptions,
       [Descriptions.Item.name]: Descriptions.Item,
@@ -94,19 +102,15 @@
       podName: propTypes.string,
     },
     setup(props) {
-      const descIsReady = ref(false);
+      const isReady = ref(false);
       const logIsReady = ref(false);
-      const statusIsReady = ref(false);
 
       const podInfo = reactive({ metadata: {}, spec: { containers: [] } } as PodInCreate);
       const podStatus = reactive({});
       const portInfo = reactive({} as ContainerPort);
 
-      const volumeSchema = reactive([] as DescItem[]);
-      const volumes = reactive({});
-
-      const envSchema = reactive([] as DescItem[]);
-      const envs = reactive({});
+      const volumes = reactive([] as any[]);
+      const envs = reactive([] as any[]);
 
       const logs = ref('');
 
@@ -119,45 +123,21 @@
             portInfo.containerPort = podInfo.spec.containers![0].ports![0].containerPort;
             portInfo.protocol = podInfo.spec.containers![0].ports![0].protocol;
 
-            let n = 0;
-            podInfo.spec.volumes?.forEach((value) => {
-              volumes[`pvc${n}`] = value.persistentVolumeClaim!.claimName;
-              volumeSchema.push(
-                {
-                  field: `pvc${n}`,
-                  label: '卷宗名稱',
-                },
-                {
-                  field: `mount${n}`,
-                  label: '掛載路徑',
-                }
-              );
-              n++;
+            podInfo.spec.volumes?.forEach((volume) => {
+              volumes.push({
+                pvc: volume.persistentVolumeClaim!.claimName,
+                mountPath: podInfo.spec.containers![0].volumeMounts?.find(
+                  (volumeMounts) => volumeMounts.name == volume.name
+                )?.mountPath,
+              });
             });
 
-            podInfo.spec.containers![0].volumeMounts?.forEach((value) => {
-              volumes[`mount${value.name}`] = value.mountPath;
+            podInfo.spec.containers![0].env?.forEach((env) => {
+              envs.push({
+                name: env.name,
+                value: env.value,
+              });
             });
-
-            n = 0;
-            podInfo.spec.containers![0].env?.forEach((value) => {
-              envs[`name${n}`] = value.name;
-              envs[`value${n}`] = value.value;
-
-              envSchema.push(
-                {
-                  field: `name${n}`,
-                  label: 'Key',
-                },
-                {
-                  field: `value${n}`,
-                  label: 'Value',
-                }
-              );
-              n++;
-            });
-
-            descIsReady.value = true;
           })
           .catch((_error) => {});
 
@@ -166,12 +146,9 @@
             podStatus['status'] = status.status;
             podStatus['phase'] = status.status.phase;
             podStatus['message'] =
-              status.status.containerStatuses![0].state!.waiting?.message ?? '';
-            statusIsReady.value = true;
+              status.status.containerStatuses![0].state!.waiting?.message ?? 'None';
           })
-          .catch((_error) => {
-            console.log(_error);
-          });
+          .catch((_error) => {});
 
         getPodLogByNameAPI(props.podName)
           .then((log) => {
@@ -179,11 +156,12 @@
             if (log) logIsReady.value = true;
           })
           .catch((_error) => {});
+
+        isReady.value = true;
       });
 
       return {
-        descIsReady,
-        statusIsReady,
+        isReady,
         logIsReady,
 
         metaSchema,
@@ -191,8 +169,9 @@
         imageSchema,
         portSchema,
         ipSchema,
-        volumeSchema,
-        envSchema,
+
+        volumeColumns,
+        envColumns,
 
         podInfo,
         podStatus,

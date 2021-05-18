@@ -1,4 +1,5 @@
 import { DescItem } from '/@/components/Description';
+import { BasicColumn } from '/@/components/Table/src/types/table';
 
 export const metaSchema: DescItem[] = [
   {
@@ -56,5 +57,27 @@ export const ipSchema: DescItem[] = [
   {
     field: 'podIP',
     label: '容器IP位置',
+  },
+];
+
+export const volumeColumns: BasicColumn[] = [
+  {
+    title: '卷宗名稱',
+    dataIndex: 'pvc',
+  },
+  {
+    title: '掛載路徑',
+    dataIndex: 'mountPath',
+  },
+];
+
+export const envColumns: BasicColumn[] = [
+  {
+    title: 'Key',
+    dataIndex: 'name',
+  },
+  {
+    title: 'Value',
+    dataIndex: 'value',
   },
 ];
