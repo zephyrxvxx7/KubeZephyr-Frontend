@@ -14,6 +14,12 @@ export interface PvcInUpdate {
   spec?: PersistentVolumeClaimSpec;
 }
 
+export interface ManyPvc {
+  name: string;
+  accessMode: string;
+  storage: string;
+}
+
 export interface ManyPvcInResponse {
-  pvc: Array<string>;
+  pvc: Array<ManyPvc>;
 }

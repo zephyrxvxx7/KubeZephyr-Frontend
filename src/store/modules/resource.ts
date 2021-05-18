@@ -7,7 +7,7 @@ import { POD_LIST, PVC_LIST, INGRESS_LIST } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 
 import type { ManyPodInResponse } from '/@/api/model/resources/podModel';
-import type { ManyPvcInResponse } from '/@/api/model/resources/pvcModel';
+import type { ManyPvc, ManyPvcInResponse } from '/@/api/model/resources/pvcModel';
 import type { ManyIngress, ManyIngressInResponse } from '/@/api/model/resources/ingressModel';
 import { getPodsNameAPI } from '/@/api/pod';
 import { getPvcsNameAPI } from '/@/api/pvc';
@@ -15,7 +15,7 @@ import { getIngressesAPI } from '/@/api/ingress';
 
 interface ResourceState {
   pods: Array<string>;
-  pvcs: Array<string>;
+  pvcs: Array<ManyPvc>;
   ingresses: Array<ManyIngress>;
   isAddedNewResource: boolean;
 }
@@ -38,7 +38,7 @@ export const useResourceStore = defineStore({
       return this.pods.length > 0 ? this.pods : getAuthCache<Array<string>>(POD_LIST);
     },
     getPvcList() {
-      return this.pvcs.length > 0 ? this.pvcs : getAuthCache<Array<string>>(PVC_LIST);
+      return this.pvcs.length > 0 ? this.pvcs : getAuthCache<Array<ManyPvc>>(PVC_LIST);
     },
     getIngressList() {
       return this.ingresses.length > 0
@@ -54,7 +54,7 @@ export const useResourceStore = defineStore({
       this.pods = pods;
       setAuthCache(POD_LIST, pods);
     },
-    setPvcList(pvcs: Array<string>) {
+    setPvcList(pvcs: Array<ManyPvc>) {
       this.pvcs = pvcs;
       setAuthCache(PVC_LIST, pvcs);
     },
@@ -109,12 +109,14 @@ export const useResourceStore = defineStore({
 
       const result: OptionsItem[] = [];
 
-      pvcList.pvc.forEach(function (value) {
-        result.push({
-          label: value,
-          value: value,
+      pvcList.pvc
+        .map((pvc) => pvc.name)
+        .forEach(function (value) {
+          result.push({
+            label: value,
+            value: value,
+          });
         });
-      });
 
       return result;
     },

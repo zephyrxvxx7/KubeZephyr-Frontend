@@ -1,6 +1,7 @@
 import type { LockInfo, UserInfo } from '/#/store';
 import type { ProjectConfig } from '/#/config';
 import type { RouteLocationNormalized } from 'vue-router';
+import type { ManyPvc } from '/@/api/model/resources/pvcModel';
 import type { ManyIngress } from '/@/api/model/resources/ingressModel';
 
 import { createLocalStorage, createSessionStorage } from '/@/utils/cache';
@@ -26,7 +27,7 @@ interface BasicStore {
   [USER_INFO_KEY]: UserInfo;
   [ROLES_KEY]: string[];
   [POD_LIST]: string[];
-  [PVC_LIST]: string[];
+  [PVC_LIST]: ManyPvc[];
   [INGRESS_LIST]: ManyIngress[];
   [LOCK_INFO_KEY]: LockInfo;
   [PROJ_CFG_KEY]: ProjectConfig;

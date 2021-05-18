@@ -20,7 +20,11 @@ export const step1Schemas: FormSchema[] = [
 
           if (value === '') return Promise.reject(t('common.requiredText'));
 
-          if (useResourceStore().getPvcList.includes(value))
+          if (
+            useResourceStore()
+              .getPvcList.map((pvc) => pvc.name)
+              .includes(value)
+          )
             return Promise.reject(t('volume.create.nameRuleMessage'));
 
           if (value.length > 63) return Promise.reject(t('volume.create.nameLengthMessage'));
