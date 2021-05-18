@@ -111,6 +111,7 @@ export const useUserStore = defineStore({
       }
     ): Promise<UserInResponse | null> {
       try {
+        const { hasPermission } = usePermission();
         const { goHome = true, mode, ...registerParams } = params;
         const data = await registerAPI(registerParams, mode);
 
@@ -127,6 +128,10 @@ export const useUserStore = defineStore({
           desc: desc,
         });
         this.setRoleList(roleList);
+
+        if (hasPermission(RoleEnum.USER)) {
+          this.resourceInit(params);
+        }
 
         goHome && (await router.replace(PageEnum.BASE_HOME));
         return data;
