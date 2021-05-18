@@ -1,41 +1,42 @@
-import { FormSchema } from '/@/components/Form';
+import { reactive } from 'vue';
+
+import type { BasicColumn } from '/@/components/Table/src/types/table';
+import type { FormSchema } from '/@/components/Form/index';
+import type { BasicFetchResult } from '/@/api/model/baseModel';
+import type { ManyPvc } from '/@/api/model/resources/pvcModel';
+
 import { useResourceStore } from '/@/store/modules/resource';
 import { useI18n } from '/@/hooks/web/useI18n';
 const { t } = useI18n();
 
-export const step1Schemas: FormSchema[] = [
+export const volumeColumns: BasicColumn[] = [
+  {
+    title: t('volume.create.name'),
+    dataIndex: 'name',
+  },
+  {
+    title: t('volume.create.accessModes'),
+    dataIndex: 'accessMode',
+  },
+  {
+    title: t('volume.create.storage'),
+    dataIndex: 'storage',
+  },
+];
+
+export const editSchemas: FormSchema[] = [
   {
     field: 'name',
     component: 'Input',
     label: t('volume.create.name'),
+    required: true,
     colProps: {
       span: 20,
     },
     defaultValue: 'my-volume',
-    rules: [
-      {
-        required: true,
-        validator: async (_rule, value) => {
-          const reg = new RegExp(`^(?![0-9]+$)(?!.*-$)(?!-)[a-zA-Z0-9-]{1,63}$`);
-
-          if (value === '') return Promise.reject(t('common.requiredText'));
-
-          if (
-            useResourceStore()
-              .getPvcList.map((pvc) => pvc.name)
-              .includes(value)
-          )
-            return Promise.reject(t('volume.create.nameRuleMessage'));
-
-          if (value.length > 63) return Promise.reject(t('volume.create.nameLengthMessage'));
-
-          if (!reg.test(value)) return Promise.reject(t('volume.create.nameRegexMessage'));
-
-          return Promise.resolve();
-        },
-        trigger: 'change',
-      },
-    ],
+    componentProps: {
+      disabled: true,
+    },
   },
   {
     field: 'accessModes',
@@ -47,7 +48,13 @@ export const step1Schemas: FormSchema[] = [
     },
     defaultValue: 'ReadWriteOnce',
     componentProps: {
+      disabled: true,
       options: [
+        {
+          label: 'ReadWriteOnce',
+          value: 'ReadWriteOnce',
+          key: 'ReadWriteOnce',
+        },
         {
           label: 'ReadWriteMany',
           value: 'ReadWriteMany',
@@ -57,11 +64,6 @@ export const step1Schemas: FormSchema[] = [
           label: 'ReadOnlyMany',
           value: 'ReadOnlyMany',
           key: 'ReadOnlyMany',
-        },
-        {
-          label: 'ReadWriteOnce',
-          value: 'ReadWriteOnce',
-          key: 'ReadWriteOnce',
         },
       ],
     },
@@ -73,7 +75,7 @@ export const step1Schemas: FormSchema[] = [
     required: true,
     defaultValue: 1,
     colProps: {
-      span: 9,
+      span: 11,
     },
     componentProps: {
       min: 0.1,
@@ -86,7 +88,7 @@ export const step1Schemas: FormSchema[] = [
     label: '',
     required: true,
     colProps: {
-      span: 8,
+      span: 11,
     },
     defaultValue: 'Gi',
     componentProps: {
@@ -125,3 +127,18 @@ export const step1Schemas: FormSchema[] = [
     },
   },
 ];
+
+export interface volumeListItem {
+  name: string;
+  accessModes: string;
+  storage: string;
+}
+
+export function volumeListApi(): Promise<BasicFetchResult<ManyPvc[]>> {
+  const volumes: BasicFetchResult<ManyPvc[]> = reactive({ items: [], total: 0 });
+
+  volumes.items = useResourceStore().getPvcList;
+  volumes.total = useResourceStore().getPvcList.length;
+
+  return Promise.resolve(volumes);
+}
