@@ -13,5 +13,5 @@ export default {
 
   index: '索引',
 
-  total: '共 {total} 條資料',
+  total: '共 {total} 筆資料',
 };
