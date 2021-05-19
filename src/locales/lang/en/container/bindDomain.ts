@@ -24,4 +24,9 @@ export default {
   failSubTitle: 'Please confirm the following message before binding again.',
   failRedoBtn: 'Back',
   failMessageText: 'Error message',
+
+  // Binded
+  bindedTitle: 'The container is already bound to a domain',
+  unbindBtn: 'Unbind',
+  unbindSuccessTitle: 'Unbind domain successfully',
 };

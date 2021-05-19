@@ -24,4 +24,9 @@ export default {
   failSubTitle: '請確認以下訊息後，再重新綁定。',
   failRedoBtn: '返回修改',
   failMessageText: '錯誤訊息',
+
+  // Binded
+  bindedTitle: '該容器已經綁定網域',
+  unbindBtn: '解除綁定',
+  unbindSuccessTitle: '成功解除綁定網域',
 };
