@@ -31,10 +31,12 @@
         setFieldsValue({
           name: data.name,
           accessModes: data.accessModes,
-          storage: parseInt(data.storage.substr(0, data.storage.length - 2), 10),
+          storage: parseFloat(data.storage.substr(0, data.storage.length - 2)),
           si: data.storage.substr(data.storage.length - 2),
         });
         setModalProps({
+          canFullscreen: false,
+          title: t('volume.edit.editText'),
           okText: t('volume.edit.updateBtn'),
         });
       });
