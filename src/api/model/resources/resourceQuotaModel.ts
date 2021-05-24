@@ -6,19 +6,19 @@
 export interface ResourceQuotaBase {
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof ResourceQuotaBase
    */
-  limit_cpu: number;
+  limit_cpu: string;
   /**
    *
    * @type {number}
    * @memberof ResourceQuotaBase
    */
-  limit_memory: number;
+  limit_memory: string;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof ResourceQuotaBase
    */
   persistentvolumeclaims: number;
@@ -30,10 +30,10 @@ export interface ResourceQuotaBase {
   pods: number;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof ResourceQuotaBase
    */
-  request_storage: number;
+  request_storage: string;
 }
 /**
  *
@@ -56,16 +56,16 @@ export interface ResourceQuotaInResponse {
 export interface ResourceQuotaInUpdate {
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof ResourceQuotaInUpdate
    */
-  limit_cpu?: number;
+  limit_cpu?: string;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof ResourceQuotaInUpdate
    */
-  limit_memory?: number;
+  limit_memory?: string;
   /**
    *
    * @type {number}
@@ -80,10 +80,10 @@ export interface ResourceQuotaInUpdate {
   pods?: number;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof ResourceQuotaInUpdate
    */
-  request_storage?: number;
+  request_storage?: string;
 }
 /**
  *
