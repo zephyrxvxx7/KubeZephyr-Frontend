@@ -27,8 +27,12 @@
 
         <BasicForm @register="registerPvc">
           <template #add="{ field }">
-            <a-button v-if="Number(field) === 0" @click="add">+</a-button>
-            <a-button v-if="Number(field) > 0" @click="del(field)">-</a-button>
+            <a-button @click="del(Number(field))" shape="circle">
+              <template #icon><MinusOutlined /></template>
+            </a-button>
+            <a-button v-if="Number(field) === n" @click="add" shape="circle">
+              <template #icon><PlusOutlined /></template>
+            </a-button>
           </template>
         </BasicForm>
       </div>
@@ -53,7 +57,8 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, reactive, unref, toRaw, watch } from 'vue';
-  import { Alert, Input, Divider, Select, Spin } from 'ant-design-vue';
+  import { Alert, Button, Input, Divider, Select, Spin } from 'ant-design-vue';
+  import { PlusOutlined, MinusOutlined } from '@ant-design/icons-vue';
   import { debounce } from 'lodash-es';
 
   import { BasicForm, useForm } from '/@/components/Form';
@@ -67,7 +72,10 @@
   export default defineComponent({
     components: {
       BasicForm,
+      PlusOutlined,
+      MinusOutlined,
       [Alert.name]: Alert,
+      [Button.name]: Button,
       [Input.name]: Input,
       [Divider.name]: Divider,
       [Select.name]: Select,
@@ -86,7 +94,13 @@
 
       const [
         registerPvc,
-        { appendSchemaByField, removeSchemaByFiled, validate: validatePvcForm },
+        {
+          appendSchemaByField,
+          removeSchemaByFiled,
+          setFieldsValue,
+          getFieldsValue,
+          validate: validatePvcForm,
+        },
       ] = useForm({
         labelWidth: 100,
         schemas: step1PvcSchemas,
@@ -159,12 +173,14 @@
       );
 
       // DynamicVolume
-      const n = ref(1);
+      const n = ref(0);
 
       function add() {
-        const native_n = toRaw(unref(n));
+        if (n.value < resourceStore.getPvcList.length - 1) {
+          n.value++;
 
-        if (native_n < resourceStore.getPvcList.length) {
+          const native_n = toRaw(unref(n));
+
           appendSchemaByField(
             {
               field: `pvc${native_n}`,
@@ -210,11 +226,19 @@
             },
             ''
           );
-          n.value++;
         }
       }
-      function del(field) {
-        removeSchemaByFiled([`pvc${field}`, `mount${field}`, `${field}`]);
+      async function del(field: number) {
+        const values = getFieldsValue();
+        for (let iter = field; iter < n.value; iter++) {
+          values[`pvc${iter}`] = values[`pvc${iter + 1}`];
+          values[`mount${iter}`] = values[`mount${iter + 1}`];
+        }
+
+        await removeSchemaByFiled([`pvc${n.value}`, `mount${n.value}`, `${n.value}`]);
+        delete values[`pvc${n.value}`];
+        delete values[`mount${n.value}`];
+        await setFieldsValue(values);
         n.value--;
       }
 
@@ -231,7 +255,7 @@
             const pvcValues = await validatePvcForm();
 
             pvcResult = [];
-            for (let index = 0; index < n.value; index++) {
+            for (let index = 0; index <= n.value; index++) {
               if (pvcValues[`pvc${index}`]) {
                 pvcResult.push({
                   pvc: pvcValues[`pvc${index}`],

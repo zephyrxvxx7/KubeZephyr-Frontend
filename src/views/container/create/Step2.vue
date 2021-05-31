@@ -4,8 +4,12 @@
     <a-divider />
     <BasicForm @register="registerEnv">
       <template #add="{ field }">
-        <Button v-if="Number(field) === 0" @click="add">+</Button>
-        <Button v-if="field > 0" @click="del(field)">-</Button>
+        <a-button @click="del(Number(field))" shape="circle">
+          <template #icon><MinusOutlined /></template>
+        </a-button>
+        <a-button v-if="Number(field) === n" @click="add" shape="circle">
+          <template #icon><PlusOutlined /></template>
+        </a-button>
       </template>
     </BasicForm>
   </div>
@@ -13,9 +17,9 @@
 <script lang="ts">
   import { defineComponent, ref, unref, toRaw } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { Button } from '/@/components/Button';
   import { step2EnvSchemas } from './data';
-  import { Alert, Divider, Descriptions } from 'ant-design-vue';
+  import { Alert, Button, Divider, Descriptions } from 'ant-design-vue';
+  import { PlusOutlined, MinusOutlined } from '@ant-design/icons-vue';
 
   import { EnvVar } from '/@/api/model/resources/resourcesModel';
 
@@ -24,8 +28,10 @@
   export default defineComponent({
     components: {
       BasicForm,
-      Button,
+      PlusOutlined,
+      MinusOutlined,
       [Alert.name]: Alert,
+      [Button.name]: Button,
       [Divider.name]: Divider,
       [Descriptions.name]: Descriptions,
       [Descriptions.Item.name]: Descriptions.Item,
@@ -35,7 +41,14 @@
       const { t } = useI18n();
       const [
         registerEnv,
-        { appendSchemaByField, removeSchemaByFiled, validate: validateEnvForm, setProps },
+        {
+          appendSchemaByField,
+          removeSchemaByFiled,
+          setFieldsValue,
+          getFieldsValue,
+          validate: validateEnvForm,
+          setProps,
+        },
       ] = useForm({
         labelWidth: 80,
         schemas: step2EnvSchemas,
@@ -52,9 +65,10 @@
         submitFunc: customSubmitFunc,
       });
 
-      const n = ref(1);
+      const n = ref(0);
 
       function add() {
+        n.value++;
         const native_n = toRaw(unref(n));
 
         appendSchemaByField(
@@ -99,10 +113,18 @@
           },
           ''
         );
-        n.value++;
       }
-      function del(field) {
-        removeSchemaByFiled([`key${field}`, `value${field}`, `${field}`]);
+      async function del(field: number) {
+        const values = getFieldsValue();
+        for (let iter = field; iter < n.value; iter++) {
+          values[`key${iter}`] = values[`key${iter + 1}`];
+          values[`value${iter}`] = values[`value${iter + 1}`];
+        }
+
+        await removeSchemaByFiled([`key${n.value}`, `value${n.value}`, `${n.value}`]);
+        delete values[`key${n.value}`];
+        delete values[`value${n.value}`];
+        await setFieldsValue(values);
         n.value--;
       }
 
@@ -115,7 +137,7 @@
           const values = await validateEnvForm();
 
           const result: Array<EnvVar> | undefined = [];
-          for (let index = 0; index < n.value; index++) {
+          for (let index = 0; index <= n.value; index++) {
             if (values[`key${index}`]) {
               result.push({
                 name: values[`key${index}`],
@@ -140,7 +162,7 @@
         } catch (error) {}
       }
 
-      return { t, registerEnv, add, del };
+      return { t, registerEnv, n, add, del };
     },
   });
 </script>
