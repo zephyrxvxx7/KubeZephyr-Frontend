@@ -1,18 +1,36 @@
 <template>
   <BasicTable @register="registerTable" @ok="handleReload">
+    <template #customIsDefault>
+      <span>
+        {{ t('admin.alertChannel.manage.isDefault') }}
+        <BasicHelp class="ml-2" :text="t('admin.alertChannel.manage.isDefaultHelp')" />
+      </span>
+    </template>
+    <template #customDisableResolveMessage>
+      <span>
+        {{ t('admin.alertChannel.manage.disableResolveMessage') }}
+        <BasicHelp class="ml-2" :text="t('admin.alertChannel.manage.disableResolveMessageHelp')" />
+      </span>
+    </template>
+    <template #expandedRowRender="{ record }">
+      <span> Emails: </span>
+      <Tag v-for="address in record.addresses" :key="address">
+        {{ address }}
+      </Tag>
+    </template>
     <template #action="{ record }">
       <TableAction
         :actions="[
           {
-            label: t('admin.users.manage.editText'),
+            label: t('admin.alertChannel.manage.editText'),
             icon: 'ic:outline-edit',
             onClick: handleEdit.bind(null, record),
           },
           {
-            label: t('admin.users.manage.deleteText'),
+            label: t('admin.alertChannel.manage.deleteText'),
             icon: 'ic:outline-delete-outline',
             popConfirm: {
-              title: t('admin.users.manage.confirmDeleteMessage'),
+              title: t('admin.alertChannel.manage.confirmDeleteMessage'),
               confirm: handleDelete.bind(null, record),
             },
           },
@@ -22,24 +40,29 @@
     </template>
     <template #toolbar>
       <a-button type="primary" @click="handleReload" :loading="loading">
-        {{ t('admin.users.manage.reloadText') }}
+        {{ t('admin.alertChannel.manage.reloadText') }}
       </a-button>
     </template>
   </BasicTable>
 </template>
 <script lang="ts">
   import { defineComponent, ref, toRaw } from 'vue';
+  import { Tag } from 'ant-design-vue';
+
   import { useModal } from '/@/components/Modal';
+  import { BasicHelp } from '/@/components/Basic';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
 
-  import { deleteUserAPI } from '/@/api/admin';
+  import { deleteAlertChannelAPI } from '/@/api/admin';
   import { useI18n } from '/@/hooks/web/useI18n';
 
   import EditModal from './edit.vue';
-  import { userColumns, userListApi } from './data';
+  import { alertChannelColumns, alertChannelListApi } from './data';
 
   export default defineComponent({
     components: {
+      Tag,
+      BasicHelp,
       BasicTable,
       TableAction,
       EditModal,
@@ -49,10 +72,10 @@
       const loading = ref(false);
 
       const [registerTable, { reload }] = useTable({
-        title: 'Users',
-        titleHelpMessage: '使用者管理',
-        api: userListApi,
-        columns: userColumns,
+        title: 'Alert Channels',
+        titleHelpMessage: '警示頻道管理',
+        api: alertChannelListApi,
+        columns: alertChannelColumns,
         striped: false,
         bordered: false,
         showIndexColumn: false,
@@ -66,17 +89,10 @@
       const [registerModal, { openModal }] = useModal();
 
       function handleEdit(record: Recordable) {
-        openModal(true, {
-          id: record.id,
-          limit_cpu: record.cpuLimit,
-          limit_memory: record.memoryLimit,
-          request_storage: record.storageRequest,
-          persistentvolumeclaims: record.pvcs,
-          pods: record.pods,
-        });
+        openModal(true, record);
       }
       function handleDelete(record: Recordable) {
-        deleteUserAPI(toRaw(record.id));
+        deleteAlertChannelAPI(toRaw(record.uid));
         setTimeout(() => {
           reload();
         }, 1500);
