@@ -14,7 +14,7 @@ import { primaryColor } from '../../build/config/themeConfig';
 // ! You need to clear the browser cache after the change
 const setting: ProjectConfig = {
   // Whether to show the configuration button
-  showSettingButton: true,
+  showSettingButton: false,
 
   // Whether to show the theme switch button
   showDarkModeToggle: true,
@@ -145,7 +145,7 @@ const setting: ProjectConfig = {
   },
 
   // Whether to enable KeepAlive cache is best to close during development, otherwise the cache needs to be cleared every time
-  openKeepAlive: false,
+  openKeepAlive: true,
 
   // Automatic screen lock time, 0 does not lock the screen. Unit minute default 0
   lockTime: 0,
