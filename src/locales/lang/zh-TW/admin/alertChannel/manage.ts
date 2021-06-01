@@ -10,13 +10,6 @@ export default {
   isDefaultHelp: '系統內所有警示皆會寄到此組信箱',
   disableResolveMessageHelp: '停止寄送由警示狀態轉為正常狀態的信件',
 
-  resourceQuota: '資源配額',
-  cpuLimit: '處理器',
-  memoryLimit: '記憶體',
-  pvcs: '卷宗數量',
-  pods: '容器數量',
-  storageRequest: '儲存空間',
-
   // Action
   editText: '編輯',
   deleteText: '刪除',

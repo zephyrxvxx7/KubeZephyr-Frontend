@@ -49,7 +49,7 @@
       const loading = ref(false);
 
       const frameSrc = computed(() => {
-        return `https://grafana.zephyr-kubernetes.tech/d/${getUserInfo.userId}-${props.podName}/pod-overview-with-alerts?orgId=1&refresh=10s&from=now-24h&to=now&kiosk&theme=${getDarkMode.value}`;
+        return `https://grafana.zephyr-kubernetes.tech/d/${getUserInfo.userId}-${props.podName}/${getUserInfo.realName}-${props.podName}-pod-overview-with-alerts?orgId=1&refresh=10s&from=now-24h&to=now&kiosk&theme=${getDarkMode.value}`;
       });
 
       const [registerInfo, { openDrawer: openInfoDrawer }] = useDrawer();

@@ -251,8 +251,8 @@ export async function userListApi(): Promise<BasicFetchResult<userListItem[]>> {
     return result;
   };
 
-  const users = await getUsersAPI();
-  const items = await Promise.all(users.user.map(fn));
+  const { user: users } = await getUsersAPI();
+  const items = await Promise.all(users.map(fn));
 
   return {
     items: items,
