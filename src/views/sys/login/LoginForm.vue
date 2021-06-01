@@ -13,25 +13,6 @@
       />
     </FormItem>
 
-    <ARow class="enter-x">
-      <ACol :span="12">
-        <FormItem>
-          <!-- No logic, you need to deal with it yourself -->
-          <Checkbox v-model:checked="rememberMe" size="small">
-            {{ t('sys.login.rememberMe') }}
-          </Checkbox>
-        </FormItem>
-      </ACol>
-      <ACol :span="12">
-        <FormItem :style="{ 'text-align': 'right' }">
-          <!-- No logic, you need to deal with it yourself -->
-          <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
-            {{ t('sys.login.forgetPassword') }}
-          </Button>
-        </FormItem>
-      </ACol>
-    </ARow>
-
     <FormItem class="enter-x">
       <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
         {{ t('sys.login.loginButton') }}
@@ -45,19 +26,12 @@
         {{ t('sys.login.registerButton') }}
       </Button>
     </ARow>
-
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
-
-    <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
-      <GithubFilled />
-    </div>
   </Form>
 </template>
 <script lang="ts">
   import { defineComponent, reactive, ref, toRaw, unref, computed } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
-  import { GithubFilled } from '@ant-design/icons-vue';
+  import { Form, Input, Row, Col, Button } from 'ant-design-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -73,15 +47,12 @@
     components: {
       [Col.name]: Col,
       [Row.name]: Row,
-      Checkbox,
       Button,
       Form,
       FormItem: Form.Item,
       Input,
-      Divider,
       LoginFormTitle,
       InputPassword: Input.Password,
-      GithubFilled,
     },
     setup() {
       const { t } = useI18n();
