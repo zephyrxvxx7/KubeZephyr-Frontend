@@ -16,7 +16,6 @@
       const podName = ref('');
 
       const [register] = useDrawerInner((data) => {
-        console.log(data);
         id.value = data.id;
         podName.value = data.podName;
       });

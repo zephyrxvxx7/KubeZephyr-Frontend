@@ -99,9 +99,8 @@
         pod.env = step2Values ?? undefined;
 
         handleCreatePod(toRaw(pod))
-          .then((result) => {
+          .then((_result) => {
             const { getPodListFromAPI, setIsAddedNewResource } = useResourceStore();
-            console.log(result);
             getPodListFromAPI({});
             setIsAddedNewResource(true);
             createSuccess.value = true;
