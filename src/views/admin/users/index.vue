@@ -2,12 +2,26 @@
   <BasicTable @register="registerTable" @ok="handleReload">
     <template #action="{ record }">
       <TableAction
+        v-if="record.role === 'user'"
         :actions="[
           {
             label: t('admin.users.manage.editText'),
             icon: 'ic:outline-edit',
             onClick: handleEdit.bind(null, record),
           },
+          {
+            label: t('admin.users.manage.deleteText'),
+            icon: 'ic:outline-delete-outline',
+            popConfirm: {
+              title: t('admin.users.manage.confirmDeleteMessage'),
+              confirm: handleDelete.bind(null, record),
+            },
+          },
+        ]"
+      />
+      <TableAction
+        v-else
+        :actions="[
           {
             label: t('admin.users.manage.deleteText'),
             icon: 'ic:outline-delete-outline',
