@@ -11,6 +11,11 @@ import type {
   AlertChannelInUpdate,
   ManyAlertChannelInResponse,
 } from '/@/api/model/alertChannelModel';
+import type {
+  ManyPodInResponse,
+  PodInResponse,
+  PodInResponseStatus,
+} from './model/resources/podModel';
 
 import { ErrorMessageMode } from '/@/utils/http/axios/types';
 
@@ -86,6 +91,81 @@ export function getResourceUsedAPI(id: string, mode: ErrorMessageMode = 'modal')
   return defHttp.get<ResourceUsedInResponse>(
     {
       url: `/admin/resources/used/${id}`,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}
+
+/**
+ * @description: get describe of pod API with authorization
+ */
+export function getPodAPI(id: string, name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.get<PodInResponse>(
+    {
+      url: `/admin/resources/pod/${id}/${name}`,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}
+
+/**
+ * @description: get log of pod API with authorization
+ */
+export function getPodLogAPI(id: string, name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.get<string>(
+    {
+      url: `/admin/resources/pod/${id}/${name}/log`,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}
+
+/**
+ * @description: get status of pod API with authorization
+ */
+export function getPodStatusAPI(id: string, name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.get<PodInResponseStatus>(
+    {
+      url: `/admin/resources/pod/${id}/${name}/status`,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}
+
+/**
+ * @description: get pods name API with authorization
+ */
+export function getPodsAPI(id: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.get<ManyPodInResponse>(
+    {
+      url: `/admin/resources/pod/${id}`,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}
+
+/**
+ * @description: delete pod API with authorization
+ */
+export function deletePodAPI(id: string, name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.delete(
+    {
+      url: `/admin/resources/pod/${id}/${name}`,
     },
     {
       errorMessageMode: mode,
