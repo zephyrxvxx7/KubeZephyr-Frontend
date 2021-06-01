@@ -63,6 +63,8 @@
         initSetp3: false,
       });
 
+      useResourceStore().getPodListFromAPI({});
+
       const createSuccess = ref(true);
       const errorMsg = ref('');
 
