@@ -21,9 +21,14 @@ export default {
   loginSuccessTitle: 'Login successful',
   loginSuccessDesc: 'Welcome back',
 
+  registerFailTitle: 'Failed to register',
+  registerFailDesc: 'The email has been registered or the service is currently unavailable',
+
   // placeholder
+  emailPlaceholder: 'Please input email',
   accountPlaceholder: 'Please input username',
   passwordPlaceholder: 'Please input password',
+  realNamePlaceholder: 'Please input username',
   smsPlaceholder: 'Please input sms code',
   mobilePlaceholder: 'Please input mobile',
   policyPlaceholder: 'Register after checking',
@@ -32,6 +37,7 @@ export default {
   userName: 'Username',
   password: 'Password',
   confirmPassword: 'Confirm Password',
+  realName: 'Username',
   email: 'Email',
   smsCode: 'SMS code',
   mobile: 'Mobile',

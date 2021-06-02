@@ -12,6 +12,9 @@ export default {
   errMsg404: 'Network request error, the resource was not found!',
   errMsg405: 'Network request error, request method not allowed!',
   errMsg408: 'Network request timed out!',
+  errMsg418: `I'm a teapot`,
+  errMsg422:
+    'The syntax of the request entity is correct, but it was unable to process the contained instructions',
   errMsg500: 'Server error, please contact the administrator!',
   errMsg501: 'The network is not implemented!',
   errMsg502: 'Network Error!',
