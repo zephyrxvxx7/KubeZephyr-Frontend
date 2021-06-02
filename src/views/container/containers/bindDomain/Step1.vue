@@ -15,13 +15,15 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, toRefs } from 'vue';
+  import { defineComponent, onMounted } from 'vue';
   import { Alert, Divider, Input } from 'ant-design-vue';
-
   import { BasicForm, useForm } from '/@/components/Form';
-  import { step1Schemas } from './data';
 
+  import { useGlobSetting } from '/@/hooks/setting';
+  import { useUserStore } from '/@/store/modules/user';
   import { useI18n } from '/@/hooks/web/useI18n';
+
+  import { step1Schemas } from './data';
 
   import { propTypes } from '/@/utils/propTypes';
 
@@ -39,10 +41,7 @@
     setup(props, { emit }) {
       const { t } = useI18n();
 
-      let { podName } = toRefs(props);
-      step1Schemas[0].defaultValue = podName;
-
-      const [register, { validate, setProps }] = useForm({
+      const [register, { validate, setProps, setFieldsValue }] = useForm({
         labelWidth: 180,
         schemas: step1Schemas,
         actionColOptions: {
@@ -53,6 +52,24 @@
           text: t('container.bindDomain.bindBtn'),
         },
         submitFunc: customSubmitFunc,
+      });
+
+      onMounted(() => {
+        const { getUserInfo } = useUserStore();
+        const { domain } = useGlobSetting();
+
+        step1Schemas.find((schema) => schema.field === 'subDomain')!.renderComponentContent =
+          () => {
+            return {
+              suffix: () => `.${getUserInfo.realName.toLowerCase()}.${domain}`,
+            };
+          };
+        setFieldsValue({
+          podName: props.podName,
+        });
+        setProps({
+          schemas: step1Schemas,
+        });
       });
 
       async function customSubmitFunc() {

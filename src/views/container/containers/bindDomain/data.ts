@@ -1,7 +1,5 @@
 import { FormSchema } from '/@/components/Form';
-import { useUserStore } from '/@/store/modules/user';
 import { useResourceStore } from '/@/store/modules/resource';
-import { useGlobSetting } from '/@/hooks/setting';
 import { useI18n } from '/@/hooks/web/useI18n';
 const { t } = useI18n();
 
@@ -24,12 +22,6 @@ export const step1Schemas: FormSchema[] = [
     label: t('container.bindDomain.subdomain'),
     colProps: {
       span: 20,
-    },
-    renderComponentContent: () => {
-      return {
-        suffix: () =>
-          `.${useUserStore().getUserInfo.realName.toLowerCase()}.${useGlobSetting().domain}`,
-      };
     },
     rules: [
       {
