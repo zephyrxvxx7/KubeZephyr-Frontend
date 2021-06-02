@@ -68,8 +68,8 @@
       const rememberMe = ref(false);
 
       const formData = reactive({
-        account: 'zephyr@example.com',
-        password: '123456',
+        account: 'zephyr@zephyr-kubernetes.tech',
+        password: 'password',
       });
 
       const { validForm } = useFormValid(formRef);
