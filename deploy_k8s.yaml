@@ -19,11 +19,8 @@ spec:
         - name: kubezephyr-frontend
           image: zephyrxvxx7/kubezephyr_frontend:latest
           resources:
-            requests:
-              memory: '300Mi'
-              cpu: '200m'
             limits:
-              memory: '500Mi'
+              memory: '64Mi'
               cpu: '500m'
           ports:
             - containerPort: 8080
