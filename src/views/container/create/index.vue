@@ -84,7 +84,7 @@
         state.initSetp2 = true;
 
         pod.name = meta.name;
-        pod.image = meta.image;
+        pod.image = `${meta.image}:${meta.imageVersion}`;
         pod.port = meta.port;
         pod.limit_cpu = meta.limit_cpu ?? undefined;
         pod.limit_memory = meta.limit_memory ?? undefined;

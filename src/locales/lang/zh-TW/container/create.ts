@@ -10,6 +10,7 @@ export default {
   nameLengthMessage: '不能超過63個字元',
   nameRegexMessage: `必須由大小寫字母、數字、'-'組成，並且必須以字母或數字為開頭和結尾 (RFC 1123)`,
   image: '映像檔',
+  imageVersion: '映像檔版本',
   port: '通訊埠',
   cpuLimit: '處理器資源上限',
   memoryLimit: '記憶體資源上限',

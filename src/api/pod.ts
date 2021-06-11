@@ -112,3 +112,27 @@ export function deletePodAPI(name: string, mode: ErrorMessageMode = 'modal') {
     }
   );
 }
+
+export function getDockerImagesAPI(name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.get<string[]>(
+    {
+      url: `/docker-hub/images?q=${name}`,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}
+
+export function getDockerTagsAPI(name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.get<string[]>(
+    {
+      url: `/docker-hub/tags?q=${name}`,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}

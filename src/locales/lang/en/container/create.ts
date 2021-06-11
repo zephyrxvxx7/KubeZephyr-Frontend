@@ -10,6 +10,7 @@ export default {
   nameLengthMessage: 'Contain at most 63 characters',
   nameRegexMessage: `Must consist of alphanumeric characters, '-', and must start and end with an alphanumeric character (RFC 1123)`,
   image: 'Image',
+  imageVersion: 'Image Version',
   port: 'Port',
   cpuLimit: 'Limit of CPU',
   memoryLimit: 'Limit of memory',

@@ -36,6 +36,20 @@ export const step1Schemas: FormSchema[] = [
     required: true,
     defaultValue: 'zephyrxvxx7/kubezephyr_backend',
     slot: 'image',
+    colProps: {
+      span: 14,
+    },
+  },
+  {
+    field: 'imageVersion',
+    component: 'Input',
+    label: t('container.create.imageVersion'),
+    required: true,
+    defaultValue: 'latest',
+    slot: 'imageVersion',
+    colProps: {
+      span: 10,
+    },
   },
   {
     field: 'port',

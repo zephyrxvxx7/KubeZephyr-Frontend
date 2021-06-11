@@ -8,13 +8,29 @@
             v-model:value="model['image']"
             :placeholder="t('common.inputText')"
             :filter-option="false"
-            :not-found-content="apiState.fetching ? undefined : null"
-            @search="fetchDockerHub"
+            :not-found-content="imageState.fetching ? undefined : null"
+            @search="fetchDockerImage"
+            @select="fetchDockerImageTag"
           >
-            <template v-if="apiState.fetching" #notFoundContent>
+            <template v-if="imageState.fetching" #notFoundContent>
               <a-spin size="small" />
             </template>
-            <a-select-option v-for="d in apiState.data" :key="d.value">
+            <a-select-option v-for="d in imageState.data" :key="d.value">
+              {{ d.text }}
+            </a-select-option>
+          </a-select>
+        </template>
+        <template #imageVersion="{ model }">
+          <a-select
+            v-model:value="model['imageVersion']"
+            :placeholder="t('common.inputText')"
+            :filter-option="false"
+            :not-found-content="imageVersionState.fetching ? undefined : null"
+          >
+            <template v-if="imageVersionState.fetching" #notFoundContent>
+              <a-spin size="small" />
+            </template>
+            <a-select-option v-for="d in imageVersionState.data" :key="d.value">
               {{ d.text }}
             </a-select-option>
           </a-select>
@@ -60,10 +76,11 @@
   import { Alert, Button, Input, Divider, Select, Spin } from 'ant-design-vue';
   import { PlusOutlined, MinusOutlined } from '@ant-design/icons-vue';
   import { debounce } from 'lodash-es';
-
   import { BasicForm, useForm } from '/@/components/Form';
+
   import { step1Schemas, step1PvcSchemas } from './data';
 
+  import { getDockerImagesAPI, getDockerTagsAPI } from '/@/api/pod';
   import { useResourceStore } from '/@/store/modules/resource';
   import { useI18n } from '/@/hooks/web/useI18n';
 
@@ -116,59 +133,61 @@
 
       let lastFetchId = 0;
 
-      const apiState: apiState = reactive({
+      const imageState: apiState = reactive({
         data: [],
         value: '',
         fetching: false,
       });
 
-      const fetchDockerHub = debounce((value) => {
+      const imageVersionState: apiState = reactive({
+        data: [],
+        value: '',
+        fetching: false,
+      });
+
+      const fetchDockerImage = debounce((value: string) => {
         lastFetchId += 1;
         const fetchId = lastFetchId;
-        apiState.data = [];
-        apiState.fetching = true;
-        fetch(
-          `https://hub.docker.com/api/content/v1/products/search?page_size=10&page=1&q=${value}`
-        )
-          .then((response) => response.json())
-          .then((body) => {
-            if (fetchId !== lastFetchId) {
-              // for fetch callback order
-              return;
-            }
-            if (body.summaries) {
-              const data = body.summaries.map((image) => ({
-                text: image.name,
-                value: image.name,
-              }));
-              apiState.data.push(...data);
-            }
-          });
-        fetch(
-          `https://hub.docker.com/api/content/v1/products/search?page=1&page_size=10&source=community&q=${value}`
-        )
-          .then((response) => response.json())
-          .then((body) => {
-            if (fetchId !== lastFetchId) {
-              // for fetch callback order
-              return;
-            }
-            if (body.summaries) {
-              const data = body.summaries.map((image) => ({
-                text: image.name,
-                value: image.name,
-              }));
-              apiState.data.push(...data);
-              apiState.fetching = false;
-            }
-          });
+        imageState.data = [];
+        imageState.fetching = true;
+
+        getDockerImagesAPI(value).then((images) => {
+          if (fetchId !== lastFetchId) {
+            return;
+          }
+          const data = images.map((image) => ({
+            text: image,
+            value: image,
+          }));
+          imageState.data.push(...data);
+        });
+      }, 500);
+
+      const fetchDockerImageTag = debounce((value: string) => {
+        lastFetchId += 1;
+        const fetchId = lastFetchId;
+        imageVersionState.data = [];
+        imageVersionState.fetching = true;
+
+        getDockerTagsAPI(value).then((tags) => {
+          if (fetchId !== lastFetchId) {
+            return;
+          }
+          const data = tags.map((tag) => ({
+            text: tag,
+            value: tag,
+          }));
+          imageVersionState.data.push(...data);
+        });
       }, 500);
 
       watch(
-        () => apiState.value,
+        () => imageState.value,
         () => {
-          apiState.data = [];
-          apiState.fetching = false;
+          imageState.data = [];
+          imageState.fetching = false;
+          imageVersionState.data = [];
+          imageVersionState.fetching = false;
         }
       );
 
@@ -273,8 +292,10 @@
       return {
         t,
         // apiSearch
-        apiState,
-        fetchDockerHub,
+        imageState,
+        imageVersionState,
+        fetchDockerImage,
+        fetchDockerImageTag,
 
         registerPvc,
         register,
