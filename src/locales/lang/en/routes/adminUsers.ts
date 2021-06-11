@@ -1,3 +1,3 @@
 export default {
-  manage: 'User management',
+  manage: 'User Management',
 };

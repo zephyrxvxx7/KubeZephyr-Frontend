@@ -1,3 +1,3 @@
 export default {
-  manage: 'Alert Channel management',
+  manage: 'Alert Channel Management',
 };

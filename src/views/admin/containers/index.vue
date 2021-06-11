@@ -51,7 +51,7 @@
       const loading = ref(false);
 
       const [registerTable, { reload }] = useTable({
-        title: 'containers',
+        title: 'Containers',
         titleHelpMessage: '容器管理',
         api: containerListApi,
         columns: containerColumns,

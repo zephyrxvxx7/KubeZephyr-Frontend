@@ -1,3 +1,3 @@
 export default {
-  manage: 'Deployed containers',
+  manage: 'Deployed Container',
 };
