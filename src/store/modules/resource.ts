@@ -34,18 +34,18 @@ export const useResourceStore = defineStore({
     isAddedNewResource: false,
   }),
   getters: {
-    getPodList() {
+    getPodList(): Array<string> {
       return this.pods.length > 0 ? this.pods : getAuthCache<Array<string>>(POD_LIST);
     },
-    getPvcList() {
+    getPvcList(): Array<ManyPvc> {
       return this.pvcs.length > 0 ? this.pvcs : getAuthCache<Array<ManyPvc>>(PVC_LIST);
     },
-    getIngressList() {
+    getIngressList(): Array<ManyIngress> {
       return this.ingresses.length > 0
         ? this.ingresses
         : getAuthCache<Array<ManyIngress>>(INGRESS_LIST);
     },
-    getIsAddedNewResource() {
+    getIsAddedNewResource(): boolean {
       return this.isAddedNewResource;
     },
   },
