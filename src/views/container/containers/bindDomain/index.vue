@@ -65,7 +65,7 @@
     setup(props) {
       const { t } = useI18n();
       const { notification } = useMessage();
-      const { getIngressFromAPI } = useResourceStore();
+      const { getIngressFromAPI, getIngressList } = useResourceStore();
 
       const isCreated = ref(false);
 
@@ -75,14 +75,14 @@
       const createSuccess = ref(true);
       const errorMsg = ref('');
 
-      getIngressByNameAPI(props.podName)
-        .then((ingress) => {
-          url.value = `https://${ingress.ingress.spec!.tls![0].hosts![0]}`;
+      getIngressList.forEach((ingress) => {
+        if (ingress.name === props.podName) {
+          getIngressByNameAPI(props.podName).then((result) => {
+            url.value = `https://${result.ingress.spec!.tls![0].hosts![0]}`;
+          });
           isCreated.value = true;
-        })
-        .catch((_error) => {
-          isCreated.value = false;
-        });
+        }
+      });
 
       function handleUnbind() {
         deleteIngressAPI(props.podName).then(() => {
