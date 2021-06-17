@@ -75,12 +75,13 @@
       const createSuccess = ref(true);
       const errorMsg = ref('');
 
-      getIngressList.forEach((ingress) => {
+      getIngressList.some((ingress) => {
         if (ingress.name === props.podName) {
           getIngressByNameAPI(props.podName).then((result) => {
             url.value = `https://${result.ingress.spec!.tls![0].hosts![0]}`;
           });
           isCreated.value = true;
+          return true;
         }
       });
 
