@@ -21,7 +21,7 @@ export default {
   loginSuccessTitle: 'Login successful',
   loginSuccessDesc: 'Welcome back',
 
-  registerFailTitle: 'Failed to register',
+  registerFailTitle: 'register failed',
   registerFailDesc: 'The email has been registered or the service is currently unavailable',
 
   // placeholder
