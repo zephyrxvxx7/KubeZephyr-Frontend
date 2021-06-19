@@ -4,6 +4,7 @@ import {
   UserInResponse,
   GetUserInfoByUserIdParams,
   UserInCreate,
+  UserInUpdate,
 } from './model/userModel';
 
 import { ErrorMessageMode } from '/@/utils/http/axios/types';
@@ -11,6 +12,7 @@ import { ErrorMessageMode } from '/@/utils/http/axios/types';
 enum Api {
   Login = '/users/login',
   Register = '/users',
+  Update = '/users',
   GetPermCodeByUserId = '/getPermCodeByUserId',
 }
 
@@ -35,6 +37,22 @@ export function loginApi(params: UserInLogin, mode: ErrorMessageMode = 'modal') 
  */
 export function registerAPI(params: UserInCreate, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<UserInResponse>(
+    {
+      url: Api.Register,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+      isTransformRequestResult: false,
+    }
+  );
+}
+
+/**
+ * @description: user update api
+ */
+export function updateCurrentUserAPI(params: UserInUpdate, mode: ErrorMessageMode = 'modal') {
+  return defHttp.put<UserInResponse>(
     {
       url: Api.Register,
       params,
