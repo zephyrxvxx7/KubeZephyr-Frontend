@@ -5,10 +5,10 @@ const { t } = useI18n();
 export const formSchema: FormSchema[] = [
   {
     field: 'passwordNew',
-    label: t('sys.changePassword.passwordNew'),
+    label: t('account.changePassword.passwordNew'),
     component: 'StrengthMeter',
     componentProps: {
-      placeholder: t('sys.changePassword.passwordNew'),
+      placeholder: t('account.changePassword.passwordNew'),
     },
     colProps: {
       span: 20,
@@ -16,7 +16,7 @@ export const formSchema: FormSchema[] = [
     rules: [
       {
         required: true,
-        message: t('sys.changePassword.passwordNewRule'),
+        message: t('account.changePassword.passwordNewRule'),
       },
     ],
   },

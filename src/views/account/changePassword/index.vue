@@ -1,5 +1,8 @@
 <template>
-  <PageWrapper :title="t('sys.changePassword.title')" :content="t('sys.changePassword.content')">
+  <PageWrapper
+    :title="t('account.changePassword.title')"
+    :content="t('account.changePassword.content')"
+  >
     <div class="py-8 bg-white flex flex-col justify-center items-center">
       <BasicForm @register="register" />
       <div class="flex justify-center">
@@ -48,8 +51,8 @@
         const userInResponse = await updateCurrentUserAPI({ password: passwordNew });
         if (userInResponse) {
           notification.success({
-            message: t('sys.changePassword.successTitle'),
-            description: t('sys.changePassword.successDesc'),
+            message: t('account.changePassword.successTitle'),
+            description: t('account.changePassword.successDesc'),
             duration: 3,
           });
 
@@ -59,8 +62,8 @@
           }, 3000);
         } else {
           notification.error({
-            message: t('sys.changePassword.failTitle'),
-            description: t('sys.changePassword.failDesc'),
+            message: t('account.changePassword.failTitle'),
+            description: t('account.changePassword.failDesc'),
             duration: 3,
           });
         }
